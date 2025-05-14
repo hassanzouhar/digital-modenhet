@@ -1,0 +1,43 @@
+{
+    "enableCategoryWeighting": true,
+    "defaultCategoryWeight": 1.0,
+    "categoryWeights": {
+        "Datainnsamling": 1.0,
+        "Dataanalyse": 1.2,
+        "Dataprosesser": 1.0,
+        "Strategi": 1.5,
+        "Organisasjon": 1.3
+    },
+    "maturityProfiles": [
+        {
+            "name": "Silo-spesialisten",
+            "conditionLogic": { "Dataanalyse_min": 3.8, "Strategi_max": 2.2, "Organisasjon_max": 2.2 },
+            "description": "Din bedrift viser styrke innen dataanalyse, men sliter med å integrere dette i en overordnet strategi og få med seg organisasjonen. Dette kan føre til isolerte glansprosjekter uten bred forretningsverdi.",
+            "strengths": ["God på teknisk analyse"],
+            "pitfalls": ["Mangler strategisk retning for data", "Lite engasjement i resten av organisasjonen", "Risiko for suboptimalisering"]
+        },
+        {
+            "name": "Den forsiktige planleggeren",
+            "conditionLogic": { "Strategi_min": 3.8, "Datainnsamling_max": 2.2, "Dataanalyse_max": 2.2 },
+            "description": "Dere har en god strategisk forståelse for digitalisering, men er trege med å implementere systemer for datainnsamling og analyse. Gode planer uten handling gir ingen resultater.",
+            "strengths": ["Solid strategisk fundament"],
+            "pitfalls": ["Analyse-paralyse", "Går glipp av muligheter pga. treg implementering", "Strategi blir utdatert før den realiseres"]
+        },
+        {
+            "name": "Teknologi-optimisten",
+            "conditionLogic": { "Datainnsamling_min_OR_Dataanalyse_min": 3.5, "Strategi_max": 2.5, "Organisasjon_max": 2.5 },
+            "description": "Bedriften har investert i teknologi for datainnsamling eller analyse, men mangler en klar strategisk forankring og organisatorisk modenhet til å utnytte investeringene fullt ut.",
+            "strengths": ["Tidlig adopsjon av teknologi"],
+            "pitfalls": ["Teknologi uten tydelig forretningsverdi", "Mangel på kompetanse til å bruke verktøyene effektivt", "Lite støtte i resten av organisasjonen"]
+        },
+        {
+            "name": "Den velbalanserte utvikleren",
+            "conditionLogic": { "balancedProfile_min": 2.5, "balancedProfile_maxDiff": 1.5 },
+            "description": "Bedriften viser en relativt jevn modenhet på tvers av de ulike områdene, og er på god vei. Fokuser på kontinuerlig forbedring i alle ledd.",
+            "strengths": ["Jevn utvikling", "God balanse mellom områdene"],
+            "pitfalls": ["Kan mangle spisskompetanse på enkeltområder", "Passivitet kan føre til stagnasjon"]
+        }
+    ],
+    "gapIconSvgString": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M16 16v1a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2\"></path><path d=\"M9 5h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1\"></path><polyline points=\"13 13 16 16 13 19\"></polyline><polyline points=\"16 16 5 16\"></polyline></svg>",
+    "recommendationIconSvgString": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><circle cx=\"12\" cy=\"12\" r=\"6\"></circle><circle cx=\"12\" cy=\"12\" r=\"2\"></circle></svg>"
+}

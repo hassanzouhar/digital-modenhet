@@ -1,0 +1,72 @@
+[
+    { 
+        "name": "1. Lav digital modenhet", 
+        "range": [5, 10], 
+        "description": "Organisasjonen har begrenset digital modenhet med hovedsakelig manuelle prosesser og lite strukturert datainnsamling.", 
+        "characteristics": ["All rapportering er manuell og tidkrevende", "Datakildene er spredt og ustrukturerte", "Ingen datainnsikt i sanntid", "Lav digital kompetanse i organisasjonen", "Fraværende strategi for digitalisering"], 
+        "recommendations": [
+            { "text": "Kartlegg nåværende manuelle prosesser for å identifisere digitaliseringsmuligheter", "tags": ["Datainnsamling", "Dataprosesser"], "addressesGaps": ["gap_strategi_vs_innsamling"] },
+            { "text": "Identifiser og prioriter områder for enkel digitalisering med rask gevinst", "tags": ["Strategi", "Dataprosesser"], "addressesGaps": [] },
+            { "text": "Begynn med opplæring i grunnleggende digitale verktøy for ansatte", "tags": ["Organisasjon"], "addressesGaps": ["gap_system_vs_menneske", "gap_strategi_vs_kultur"] },
+            { "text": "Etabler en enkel digital strategi med klare mål for de neste 1-2 årene", "tags": ["Strategi"], "addressesGaps": ["gap_operativ_vs_strategi", "gap_analyse_vs_strategi"] },
+            { "text": "Vurder å rekruttere eller utvikle digital kompetanse i nøkkelposisjoner", "tags": ["Organisasjon", "Strategi"], "addressesGaps": ["gap_system_vs_menneske", "gap_kompetanse_vs_analyse"] }
+        ], 
+        "color": "#d73027"
+    },
+    { 
+        "name": "2. Fragmentert digitalisering", 
+        "range": [11, 15], 
+        "description": "Organisasjonen har begynt digitaliseringsreisen, men mangler helhetlig tilnærming og styring.", 
+        "characteristics": ["Enkel digitalisering av enkelte prosesser", "Excel og manuelle datauttak dominerer", "Silobaserte systemer med lite integrasjon", "Mangler eierskap til data", "Begrenset strategi for digitalisering"], 
+        "recommendations": [
+            { "text": "Etabler en formell dataeierskap-struktur med roller og ansvar", "tags": ["Dataprosesser", "Organisasjon"], "addressesGaps": ["gap_datavolum_vs_kontroll"] },
+            { "text": "Kartlegg alle datasystemer og identifiser integrasjonsmuligheter", "tags": ["Datainnsamling", "Strategi"], "addressesGaps": ["gap_strategi_vs_innsamling"] },
+            { "text": "Utvikle en helhetlig plan for å redusere manuelle overføringer mellom systemer", "tags": ["Dataprosesser"], "addressesGaps": [] },
+            { "text": "Standardiser datadefinisjoner og format på tvers av avdelinger", "tags": ["Dataprosesser"], "addressesGaps": ["gap_datavolum_vs_kontroll", "gap_kvalitet_vs_analysekapasitet"] },
+            { "text": "Invester i opplæring av mellomledere i dataanalyse og datadrevet beslutningsprosess", "tags": ["Organisasjon", "Dataanalyse"], "addressesGaps": ["gap_kompetanse_vs_analyse", "gap_system_vs_menneske"] }
+        ], 
+        "color": "#fc8d59" 
+    },
+    { 
+        "name": "3. Systematisert datainnsamling", 
+        "range": [16, 20], 
+        "description": "Organisasjonen har etablert systematisk datainnsamling og grunnleggende analyse, men har fortsatt rom for utvikling.", 
+        "characteristics": ["Data samles systematisk fra flere kilder", "Dashboards er etablert for sentrale KPIer", "Enkle analyser muliggjøres", "Begynnende datakvalitetsstyring", "Digital strategi med noe kobling til forretning"], 
+        "recommendations": [
+            {"text":"Automatiser dataintegrasjon mellom systemer med API-er eller ETL-prosesser", "tags":["Datainnsamling", "Dataprosesser"], "addressesGaps":["gap_strategi_vs_innsamling"]}, 
+            {"text":"Utvikle mer avanserte analytiske kapabiliteter, inkludert prediktiv analyse", "tags":["Dataanalyse"], "addressesGaps":["gap_datainnsamling_vs_analyse", "gap_kvalitet_vs_analysekapasitet"]}, 
+            {"text":"Implementer formelle datakvalitetsprosesser med måling og rapportering", "tags":["Dataprosesser"], "addressesGaps":["gap_datavolum_vs_kontroll"]}, 
+            {"text":"Oppskalere digital kompetansebygging på tvers av organisasjonen", "tags":["Organisasjon"], "addressesGaps":["gap_strategi_vs_kultur", "gap_system_vs_menneske"]}, 
+            {"text":"Integrer datadrevne beslutningsprosesser i operasjonelle rutiner", "tags":["Strategi", "Dataanalyse"], "addressesGaps":["gap_analyse_vs_strategi"]}
+        ], 
+        "color": "#fee090" 
+    },
+    { 
+        "name": "4. Proaktiv bruk av data", 
+        "range": [21, 23], 
+        "description": "Organisasjonen bruker data proaktivt til beslutningsstøtte og har etablert gode systemer for dataforvaltning.", 
+        "characteristics": ["Automatisert datainnsamling fra de fleste kilder", "Forretningsprosesser støttes av sanntidsdata", "Beslutningsstøtte integrert i drift", "Avanserte analyser gjennomføres regelmessig", "Data og digitalisering sentral i strategien"], 
+        "recommendations": [
+            {"text":"Implementer maskinlæring og KI i utvalgte områder for ytterligere optimalisering", "tags":["Dataanalyse", "Strategi"]}, 
+            {"text":"Utvikle selvbetjeningsanalyse for forretningsbrukere i hele organisasjonen", "tags":["Organisasjon", "Dataanalyse"]}, 
+            {"text":"Etabler et formelt program for datadrevet innovasjon", "tags":["Strategi", "Organisasjon"]}, 
+            {"text":"Utvid dataforvaltning til å inkludere eksterne dataprodukter og -tjenester", "tags":["Dataprosesser"]}, 
+            {"text":"Integrer datadrevet beslutningsprosess i alle aspekter av virksomheten", "tags":["Strategi"]}
+        ], 
+        "color": "#91cf60" 
+    },
+    { 
+        "name": "5. Datadrevet virksomhet", 
+        "range": [24, 25], 
+        "description": "Organisasjonen er fullt datadrevet med KI-integrasjon og optimalisering på tvers av verdikjeden.", 
+        "characteristics": ["Data og KI integrert i forretningsstrategi", "Datadrevet innovasjon og optimalisering", "Eierskap og styring av data på plass", "Helautomatisert sanntids datainnsamling", "Digital innovasjonskultur i hele organisasjonen"], 
+        "recommendations": [
+            {"text":"Utvid KI-kapabilitetene til mer avanserte anvendelser som generativ KI", "tags":["Dataanalyse", "Strategi"]}, 
+            {"text":"Utforsk nye forretningsmuligheter basert på interne og eksterne data", "tags":["Strategi"]}, 
+            {"text":"Etabler partnerskap for datadeling og økosystemutvikling", "tags":["Strategi", "Dataprosesser"]}, 
+            {"text":"Kontinuerlig optimalisering og innovasjon av datadrevne prosesser", "tags":["Dataprosesser", "Strategi"]}, 
+            {"text":"Utvikle og implementer etiske rammeverk for KI og databruk", "tags":["Organisasjon", "Dataprosesser"]}
+        ], 
+        "color": "#1a9850" 
+    }
+]
