@@ -22,9 +22,18 @@
 
     // --- Last inn all konfigurasjonsdata ---
     async function loadAllData() {
-        const configData = await loadJSON('config_no.json');
-        const questionsData = await loadJSON('questions_no.json');
-        const levelsData = await loadJSON('levels_no.json');
+        // Prøv å laste fra API-endepunkter først
+        let configData = await loadJSON('/api/config');
+        let questionsData = await loadJSON('/api/questions');
+        let levelsData = await loadJSON('/api/levels');
+
+        // Fallback til lokale filer dersom API-et ikke svarer
+        if (!configData || !questionsData || !levelsData) {
+            console.warn('Falling back to local JSON files.');
+            configData = await loadJSON('config_no.json');
+            questionsData = await loadJSON('questions_no.json');
+            levelsData = await loadJSON('levels_no.json');
+        }
 
         if (configData && questionsData && levelsData) {
             appConfig = configData;
@@ -457,6 +466,9 @@
         
         if (canvas) { requestAnimationFrame(() => { drawResultVisualization(userScore, userLevel); }); }
         if (radarCanvas) { requestAnimationFrame(() => { drawRadarChart(); }); }
+
+        // Lagre resultatet dersom backend er tilgjengelig
+        saveResultsToServer();
     }
     
     function identifyGaps() {
@@ -554,9 +566,26 @@
             }
         });
     }
-    function hexToRgba(hex, alpha) { 
+    function hexToRgba(hex, alpha) {
         const r = parseInt(hex.slice(1, 3), 16); const g = parseInt(hex.slice(3, 5), 16); const b = parseInt(hex.slice(5, 7), 16);
         return `rgba(${r},${g},${b},${alpha})`;
+    }
+
+    async function saveResultsToServer() {
+        try {
+            await fetch('/api/responses', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    timestamp: new Date().toISOString(),
+                    answers: answers,
+                    score: userScore,
+                    categoryScores: getCategoryScores(false)
+                })
+            });
+        } catch (e) {
+            console.error('Failed to save results:', e);
+        }
     }
     function resetEvaluation() { 
         resultContainer.style.display = 'none'; questionContainer.style.display = 'none'; introCard.style.display = 'block';

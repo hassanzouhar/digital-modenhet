@@ -47,6 +47,7 @@ Dette prosjektet er en web-applikasjon designet for å hjelpe bedrifter med å e
 3.  **Ingen server nødvendig for grunnleggende funksjonalitet:** Siden applikasjonen bruker `fetch` for å laste lokale JSON-filer, kan det hende at noen nettlesere har sikkerhetsrestriksjoner (CORS policy) som forhindrer dette når man åpner `index.html` direkte fra filsystemet (`file:///`).
     *   **Anbefalt løsning for utvikling:** Bruk en enkel lokal webserver. Mange kodeeditorer (som VS Code med "Live Server"-utvidelsen) har innebygd funksjonalitet for dette. Alternativt kan du bruke Python's `http.server` (Python 3: `python -m http.server`) eller Node.js-baserte servere som `http-server`.
     *   Start serveren i rotmappen til prosjektet og åpne den oppgitte adressen (f.eks. `http://localhost:8000`) i nettleseren.
+4.  **Valgfri Node-backend:** Kjør `node server.js` for å starte en enkel server som også lagrer innsendte resultater og serverer JSON-data på `/api/*` endepunkter.
 
 ## Fremtidig Utvikling (Fase 3 og utover)
 
