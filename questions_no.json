@@ -36,7 +36,7 @@
         "question": "Hvordan er data og digitalisering forankret i virksomhetens strategi?", 
         "options": [
             { "text": "Ingen klar digital strategi eller visjon", "score": 1 },
-            { "text": "Basisk digital strategi, men ikke integrert med forretningsstrategien", "score": 2 },
+            { "text": "Basis digital strategi, men ikke integrert med forretningsstrategien", "score": 2 },
             { "text": "Digitaliseringsmål definert, med noe kobling til forretningsstrategi", "score": 3 },
             { "text": "Data og digitalisering er en sentral del av forretningsstrategien", "score": 4 },
             { "text": "Datadrevet innovasjon er kjernen i virksomhetens strategi og verdiskaping", "score": 5 }
