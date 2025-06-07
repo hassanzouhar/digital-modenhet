@@ -30,7 +30,7 @@ Dette prosjektet er en web-applikasjon designet for å hjelpe bedrifter med å e
 
 *   **Frontend:** HTML, CSS, Vanilla JavaScript
 *   **Diagrammer:** Chart.js (via CDN) for spindeldiagram og potensielt andre visualiseringer.
-*   **Datastruktur:** JSON for eksternalisering av spørsmål, nivåer, og konfigurasjon.
+*   **Datastruktur:** JSON for eksternalisering av spørsmål, nivåer og konfigurasjon.
 
 ## Prosjektstruktur
 ├── index2.html // Hoved HTML-filen
