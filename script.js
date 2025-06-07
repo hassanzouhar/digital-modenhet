@@ -125,7 +125,8 @@
         const optionsDiv = document.createElement('div');
         optionsDiv.classList.add('options');
         questionData.options.forEach((option, i) => {
-            const optionElement = document.createElement('div');
+            const optionElement = document.createElement('button');
+            optionElement.type = 'button';
             optionElement.classList.add('option');
             const optionContent = document.createElement('div');
             optionContent.classList.add('option-content');
