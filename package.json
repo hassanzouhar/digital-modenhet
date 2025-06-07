@@ -1,0 +1,9 @@
+{
+  "name": "digital-modenhet",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/server.test.js && node test/orLogic.test.js"
+  }
+}

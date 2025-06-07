@@ -48,6 +48,7 @@ Dette prosjektet er en web-applikasjon designet for å hjelpe bedrifter med å e
     *   **Anbefalt løsning for utvikling:** Bruk en enkel lokal webserver. Mange kodeeditorer (som VS Code med "Live Server"-utvidelsen) har innebygd funksjonalitet for dette. Alternativt kan du bruke Python's `http.server` (Python 3: `python -m http.server`) eller Node.js-baserte servere som `http-server`.
     *   Start serveren i rotmappen til prosjektet og åpne den oppgitte adressen (f.eks. `http://localhost:8000`) i nettleseren.
 4.  **Valgfri Node-backend:** Kjør `node server.js` for å starte en enkel server som også lagrer innsendte resultater og serverer JSON-data på `/api/*` endepunkter.
+5.  **NPM-skript:** Kjør `npm install` for å installere eventuelle avhengigheter (det er ingen per nå). Start serveren med `npm start` og kjør testene med `npm test`.
 
 ## Fremtidig Utvikling (Fase 3 og utover)
 
