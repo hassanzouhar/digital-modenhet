@@ -64,10 +64,19 @@
             padding: 12px 15px;
             cursor: pointer;
             transition: all 0.2s ease;
+            display: block;
+            width: 100%;
+            text-align: left;
+            font: inherit;
+            color: var(--text-color-medium);
         }
         .option:hover {
             background-color: var(--border-color-medium);
             transform: translateY(-2px);
+        }
+        .option:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
         }
         .selected {
             background-color: #dbeafe;
