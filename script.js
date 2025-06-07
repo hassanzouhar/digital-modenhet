@@ -125,7 +125,8 @@
         const optionsDiv = document.createElement('div');
         optionsDiv.classList.add('options');
         questionData.options.forEach((option, i) => {
-            const optionElement = document.createElement('div');
+            const optionElement = document.createElement('button');
+            optionElement.type = 'button';
             optionElement.classList.add('option');
             const optionContent = document.createElement('div');
             optionContent.classList.add('option-content');
@@ -274,62 +275,71 @@
         }
         return avgScores;
     }
+
     function evaluateMaturityProfileCondition(conditionLogic, categoryScores) {
+        const parseToken = (token) => {
+            const parts = token.split('_');
+            const potentialOp = parts[parts.length - 1];
+            if (potentialOp === 'min' || potentialOp === 'max') {
+                parts.pop();
+                return { category: parts.join('_'), operator: potentialOp };
+            }
+            return { category: token, operator: null };
+        };
         let allConditionsMet = true;
         for (const key in conditionLogic) {
-            const parts = key.split('_');
-            let category = parts[0];
-            const operator = parts.length > 1 ? parts[parts.length -1] : null;
             const threshold = conditionLogic[key];
-
-            if (category === "balancedProfile") {
+    
+            if (key.includes('_OR_')) {
+                const [token1, token2] = key.split('_OR_');
+                const first = parseToken(token1);
+                const second = parseToken(token2);
+                const score1 = first.category in categoryScores ? categoryScores[first.category] : 0;
+                const score2 = second.category in categoryScores ? categoryScores[second.category] : 0;
+                const check = (score, op) => {
+                    switch (op) {
+                        case 'min': return score >= threshold;
+                        case 'max': return score <= threshold;
+                        default: return score === threshold;
+                    }
+                };
+                if (!(check(score1, first.operator) || check(score2, second.operator))) {
+                    allConditionsMet = false;
+                    break;
+                }
+                continue;
+            }
+    
+            const { category, operator } = parseToken(key);
+            if (category === 'balancedProfile') {
                 const rawAvgScores = getCategoryScores(false);
                 const rawScoresArray = Object.values(rawAvgScores).filter(s => typeof s === 'number');
                 if (rawScoresArray.length < Object.keys(rawAvgScores).length) {
                     allConditionsMet = false; break;
                 }
-                if (!(Math.min(...rawScoresArray) >= conditionLogic.balancedProfile_min && 
+                if (!(Math.min(...rawScoresArray) >= conditionLogic.balancedProfile_min &&
                       (Math.max(...rawScoresArray) - Math.min(...rawScoresArray)) <= conditionLogic.balancedProfile_maxDiff)) {
                     allConditionsMet = false; break;
                 }
                 continue;
             }
-            
-            if(key.includes("_OR_")){
-                const or_parts = category.split("_OR_");
-                const cat1 = or_parts[0];
-                const cat2 = or_parts[1];
-                 // Ensure categoryScores has the properties before accessing
-                const score1 = categoryScores.hasOwnProperty(cat1) ? categoryScores[cat1] : 0;
-                const score2 = categoryScores.hasOwnProperty(cat2) ? categoryScores[cat2] : 0;
-
-                if(!( score1 >= threshold || score2 >= threshold) ){
-                    allConditionsMet = false; break;
-                }
-                continue;
-            }
-
-            if (!categoryScores.hasOwnProperty(category)) {
-                allConditionsMet = false; break;
-            }
-
+    
+            if (!categoryScores.hasOwnProperty(category)) { allConditionsMet = false; break; }
             const scoreToCheck = categoryScores[category] || 0;
-
             switch (operator) {
-                case "min":
+                case 'min':
                     if (!(scoreToCheck >= threshold)) { allConditionsMet = false; }
                     break;
-                case "max":
+                case 'max':
                     if (!(scoreToCheck <= threshold)) { allConditionsMet = false; }
                     break;
-                default: 
+                default:
                     if (scoreToCheck !== threshold) { allConditionsMet = false; }
             }
             if (!allConditionsMet) break;
         }
         return allConditionsMet;
     }
-
 
     function showResult() {
         calculateOverallScores(); 
@@ -629,5 +639,8 @@
         }
     });
     if(startButton) startButton.disabled = true;
+    if (typeof module !== "undefined" && module.exports) {
+        module.exports.evaluateMaturityProfileCondition = evaluateMaturityProfileCondition;
+    }
 
 })();

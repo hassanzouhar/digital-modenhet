@@ -33,7 +33,7 @@ Dette prosjektet er en web-applikasjon designet for å hjelpe bedrifter med å e
 *   **Datastruktur:** JSON for eksternalisering av spørsmål, nivåer og konfigurasjon.
 
 ## Prosjektstruktur
-├── index.html // Hoved HTML-filen
+├── index2.html // Hoved HTML-filen
 ├── style.css // All CSS-styling
 ├── script.js // All JavaScript-logikk
 ├── questions_no.json // Spørsmål og svaralternativer
@@ -43,11 +43,12 @@ Dette prosjektet er en web-applikasjon designet for å hjelpe bedrifter med å e
 ## Oppsett og Kjøring
 
 1.  **Last ned filene:** Klon eller last ned alle filene i prosjektstrukturen over til en lokal mappe.
-2.  **Åpne `index.html`:** Åpne `index.html`-filen i en moderne nettleser (Chrome, Firefox, Edge, Safari).
-3.  **Ingen server nødvendig for grunnleggende funksjonalitet:** Siden applikasjonen bruker `fetch` for å laste lokale JSON-filer, kan det hende at noen nettlesere har sikkerhetsrestriksjoner (CORS policy) som forhindrer dette når man åpner `index.html` direkte fra filsystemet (`file:///`).
+2.  **Åpne `index2.html`:** Åpne `index2.html`-filen i en moderne nettleser (Chrome, Firefox, Edge, Safari).
+3.  **Ingen server nødvendig for grunnleggende funksjonalitet:** Siden applikasjonen bruker `fetch` for å laste lokale JSON-filer, kan det hende at noen nettlesere har sikkerhetsrestriksjoner (CORS policy) som forhindrer dette når man åpner `index2.html` direkte fra filsystemet (`file:///`).
     *   **Anbefalt løsning for utvikling:** Bruk en enkel lokal webserver. Mange kodeeditorer (som VS Code med "Live Server"-utvidelsen) har innebygd funksjonalitet for dette. Alternativt kan du bruke Python's `http.server` (Python 3: `python -m http.server`) eller Node.js-baserte servere som `http-server`.
     *   Start serveren i rotmappen til prosjektet og åpne den oppgitte adressen (f.eks. `http://localhost:8000`) i nettleseren.
 4.  **Valgfri Node-backend:** Kjør `node server.js` for å starte en enkel server som også lagrer innsendte resultater og serverer JSON-data på `/api/*` endepunkter.
+5.  **NPM-skript:** Kjør `npm install` for å installere eventuelle avhengigheter (det er ingen per nå). Start serveren med `npm start` og kjør testene med `npm test`.
 
 ## Fremtidig Utvikling (Fase 3 og utover)
 
