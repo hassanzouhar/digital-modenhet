@@ -45,11 +45,20 @@ function saveResponse(body, res) {
   });
 }
 
+const staticBasePath = path.resolve(__dirname);
+
 function serveStatic(res, pathname) {
-  let filePath = path.join(__dirname, pathname);
   if (pathname === '/' || pathname === '') {
-    filePath = path.join(__dirname, 'index2.html');
+    pathname = '/index2.html';
   }
+
+  const filePath = path.resolve(path.join(staticBasePath, pathname));
+  if (!filePath.startsWith(staticBasePath)) {
+    res.writeHead(400);
+    res.end('Invalid path');
+    return;
+  }
+
   fs.readFile(filePath, (err, data) => {
     if (err) {
       res.writeHead(404);
