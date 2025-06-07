@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selvevaluering - Digital Modenhet</title>
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --primary-hover-color: #2563eb;
+            --text-color-dark: #1e293b;
+            --text-color-medium: #333;
+            --text-color-light: #475569;
+            --background-color-page: #f5f7fa;
+            --background-color-card: white;
+            --border-color-light: #cbd5e1;
+            --border-color-medium: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--background-color-page);
+            color: var(--text-color-medium);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2, h3, h4 { margin-top: 0; }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card {
+            background-color: var(--background-color-card);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        #intro-card {
+            text-align: left;
+        }
+        #question-container,
+        #result-container {
+            display: none;
+        }
+        .question {
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-color-dark);
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+        .option {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color-light);
+            border-radius: 6px;
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option:hover {
+            background-color: var(--border-color-medium);
+            transform: translateY(-2px);
+        }
+        .selected {
+            background-color: #dbeafe;
+            border-color: var(--primary-color);
+            font-weight: 500;
+        }
+        .option-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .level-indicator {
+            display: flex;
+            gap: 3px;
+            min-width: 70px;
+        }
+        .level-circle {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--border-color-light);
+        }
+        .level-circle.filled {
+            background-color: var(--primary-color);
+        }
+        #questions-wrapper {
+            margin: 20px 0;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s;
+        }
+        button:hover {
+            background-color: var(--primary-hover-color);
+        }
+        button:disabled {
+            background-color: var(--border-color-light);
+            cursor: not-allowed;
+        }
+        button.outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        button.outline:hover {
+            background-color: #f1f5f9;
+        }
+        #canvas-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            align-items: center;
+        }
+        #result-canvas {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+            background: #fff;
+        }
+        
+        /* Resultatseksjon Styling */
+        #result-summary {
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--border-color-medium);
+            margin-bottom: 25px;
+        }
+        .result-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; 
+            gap: 15px; 
+            margin-bottom: 15px;
+        }
+
+        h3#result-level-combined {
+            font-size: 1.5em;
+            color: var(--text-color-dark);
+            margin-bottom: 0; 
+            line-height: 1.4;
+            flex-grow: 1; 
+        }
+        .level-number-highlight { /* Kun for nivånummer */
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        .level-name-normal { /* Kun for nivånavn */
+            font-weight: 600;
+            color: var(--text-color-dark); /* Standard mørk farge */
+        }
+        .score-badge {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            flex-shrink: 0; 
+        }
+        .score-badge #score {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        #result-summary #result-description {
+            color: var(--text-color-medium);
+            line-height: 1.7;
+            font-size: 1.05em;
+        }
+
+        .details-toggle-section { 
+            margin-top: 25px;
+            margin-bottom: 25px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border-color-medium);
+        }
+
+        .link-button {
+            background-color: transparent;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 8px 12px; /* Padding for hover-effektens "knappeform" */
+            font-size: 0.95em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            font-weight: 500;
+            border-radius: 6px; /* For hover-effektens "knappeform" */
+            transition: color 0.2s, background-color 0.2s;
+        }
+        .link-button .icon-toggle {
+            color: var(--primary-color); /* Arver ikke automatisk, så sett eksplisitt */
+            display: inline-block;
+            transition: transform 0.3s ease-out, color 0.2s;
+            margin-left: 8px;
+            font-size: 0.8em;
+        }
+        .link-button:hover {
+            color: white; 
+            background-color: var(--primary-hover-color); 
+        }
+        .link-button:hover .icon-toggle {
+            color: white; /* Sørg for at pilen også blir hvit */
+        }
+        .link-button[aria-expanded="true"] .icon-toggle { /* Kun roter pilen, ikke endre global .icon-toggle */
+            transform: rotate(180deg);
+        }
+
+
+        .collapsible-content {
+            margin-top: 15px;
+            padding: 20px;
+            background-color: #f8fafc;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary-color);
+            animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .collapsible-content h4 {
+            margin-bottom: 10px;
+            color: var(--text-color-dark);
+        }
+        .collapsible-content ul {
+            list-style-position: inside;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+        .collapsible-content li {
+            margin-bottom: 8px;
+            color: var(--text-color-light);
+        }
+
+        #visualization-section {
+            margin-bottom: 25px;
+        }
+        #visualization-section h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            color: var(--text-color-dark);
+        }
+        
+        .progress-bar {
+            width: 100%; height: 8px; background-color: var(--border-color-medium);
+            border-radius: 4px; margin: 20px 0; overflow: hidden;
+        }
+        .progress {
+            height: 100%; background-color: var(--primary-color);
+            width: 0%; transition: width 0.3s ease;
+        }
+        .step-indicator {
+            display: flex; justify-content: space-between; margin-bottom: 10px;
+        }
+        .step {
+            display: flex; flex-direction: column; align-items: center;
+            position: relative; z-index: 1; flex: 1;
+        }
+        .step-circle {
+            width: 20px; height: 20px; border-radius: 50%;
+            background-color: var(--border-color-medium); display: flex;
+            align-items: center; justify-content: center; margin-bottom: 5px;
+            color: #64748b; font-size: 12px; font-weight: 600;
+        }
+        .step-text {
+            font-size: 12px; color: #64748b; text-align: center; max-width: 90px;
+        }
+        .step.active .step-circle { background-color: var(--primary-color); color: white; }
+        .step.active .step-text { color: var(--primary-color); font-weight: 500; }
+        .step.completed .step-circle { background-color: #10b981; color: white; }
+        
+        .gaps, .recommendations-section {
+            margin-top: 25px; padding: 20px;
+            border-radius: 8px;
+        }
+        .gaps {
+            background-color: #fdf6e3; 
+            border: 1px solid #f5e7c5;
+        }
+        .recommendations-section {
+             background-color: #eef6ff; 
+             border: 1px solid #d6e7fb;
+        }
+
+        .gaps h4, .recommendations-section h4 {
+            margin-bottom: 20px; 
+            color: var(--text-color-dark); 
+            font-size: 1.25em; 
+            display: flex; align-items: center;
+            padding-bottom: 10px; 
+            border-bottom: 1px solid var(--border-color-medium);
+        }
+        .gaps h4 .section-icon-placeholder svg,
+        .recommendations-section h4 .section-icon-placeholder svg {
+            margin-right: 10px;
+            width: 22px; 
+            height: 22px;
+            vertical-align: middle; 
+        }
+        .gaps h4 .section-icon-placeholder svg { fill: #f59e0b; }
+        .recommendations-section h4 .section-icon-placeholder svg { fill: #10b981; }
+
+
+        .gap-item, .recommendation-item {
+            background-color: var(--background-color-card);
+            border-radius: 6px; 
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.07); 
+            padding: 18px; 
+            margin-bottom: 18px;
+        }
+        .gap-item { border-left: 5px solid #f59e0b; } 
+        .recommendation-item {
+            border-left: 5px solid #0ea5e9; 
+            font-size: 1em; 
+            color: var(--text-color-medium); 
+            line-height: 1.6;
+        }
+        .gap-item:last-child, .recommendation-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .gap-title {
+            font-weight: 600; color: var(--text-color-dark); 
+            font-size: 1.05em; margin-bottom: 10px; 
+        }
+        .gap-description {
+            color: var(--text-color-light); font-size: 0.95em; 
+            margin-bottom: 12px; line-height: 1.6;
+        }
+        .gap-recommendation {
+            background-color: #fff9eb; 
+            border-radius: 6px; padding: 12px;
+            font-size: 0.95em; color: var(--text-color-medium); line-height: 1.6;
+            border: 1px solid #ffeccf;
+        }
+        .gap-recommendation:before {
+            content: "Anbefaling: "; font-weight: 600; color: #c57500; 
+        }
+      
+        .restart-container {
+            margin-top: 30px; text-align: center;
+        }
+        #canvas-desc {
+            position:absolute; left:-9999px;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            .card { padding: 15px; }
+            .step-text { font-size: 10px; max-width: 70px; }
+            .question { font-size: 16px; }
+            
+            .result-header-flex { flex-direction: column; align-items: stretch; gap: 10px; }
+            h3#result-level-combined { font-size: 1.3em; text-align: center; }
+            .score-badge { font-size: 1em; padding: 6px 12px; align-self: center; }
+            .score-badge #score { font-size: 1.1em; }
+
+            #visualization-section h3 { font-size: 1.15em; }
+            .gaps h4, .recommendations-section h4 { font-size: 1.1em; }
+        }
+    </style>
+</head>
+<body>
+    
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+      </script>
+      <script defer src="/_vercel/insights/script.js"></script>
+
+    <div class="container">
+        <h1>Selvevaluering - Digital Modenhet</h1>
+        
+        <div id="intro-card" class="card">
+            <h2>Evaluer din organisasjons digitale modenhet</h2>
+            <p>Denne korte evalueringen vil hjelpe deg med å identifisere hvor din organisasjon befinner seg på skalaen for digital modenhet og dataeierskap. Du vil få tilbakemelding om nåværende nivå og anbefalinger for videre utvikling.</p>
+            <p>Evalueringen tar cirka 3 minutter å gjennomføre.</p>
+            <button id="start-btn">Start evalueringen</button>
+        </div>
+
+        <div id="question-container" class="card">
+            <div class="step-indicator">
+                <div class="step" id="step1"><div class="step-circle">1</div><div class="step-text">Datainnsamling</div></div>
+                <div class="step" id="step2"><div class="step-circle">2</div><div class="step-text">Dataanalyse</div></div>
+                <div class="step" id="step3"><div class="step-circle">3</div><div class="step-text">Dataprosesser</div></div>
+                <div class="step" id="step4"><div class="step-circle">4</div><div class="step-text">Strategi</div></div>
+                <div class="step" id="step5"><div class="step-circle">5</div><div class="step-text">Organisasjon</div></div>
+            </div>
+            <div class="progress-bar"><div class="progress" id="progress"></div></div>
+            <div id="questions-wrapper"></div>
+            <div class="navigation">
+                <button id="prev-btn" class="outline" disabled>Forrige</button>
+                <button id="next-btn" disabled>Neste</button>
+            </div>
+        </div>
+
+        <div id="result-container" class="card">
+            <div id="result-summary">
+                <div class="result-header-flex">
+                    <h3 id="result-level-combined">
+                        Resultat: Din bedrift er på <span id="level-number-actual" class="level-number-highlight"></span> "<span id="level-name-actual" class="level-name-normal"></span>"
+                    </h3>
+                    <div id="result-score-display" class="score-badge">
+                        <span id="score"></span><span>/25 poeng</span>
+                    </div>
+                </div>
+                <p id="result-description"></p>
+            </div>
+
+            <div id="visualization-section">
+                <h3>Visuell oversikt: Trappetrinnsmodell</h3>
+                <div id="canvas-container" aria-label="Visualisering av modenhetsnivå" aria-describedby="canvas-desc">
+                    <canvas id="result-canvas" width="800" height="320"></canvas>
+                    <div id="canvas-desc">
+                        Diagrammet viser din organisasjons nivå på en trappetrinnsmodell for digital modenhet.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="details-toggle-section">
+                <button id="toggle-characteristics-btn" class="link-button" aria-expanded="false" aria-controls="level-details-content" style="display: none;">
+                    <span class="button-text-placeholder">Vis kjennetegn for nivået</span> <span class="icon-toggle">▼</span>
+                </button>
+                <div id="level-details-content" class="collapsible-content" hidden>
+                    <h4>Kjennetegn ved ditt nivå:</h4>
+                    <ul id="level-characteristics"></ul>
+                </div>
+            </div>
+            
+            <div id="gaps-container" class="gaps">
+                <h4 id="gaps-title"><span class="section-icon-placeholder"></span>Dine forbedringsområder</h4>
+                <div id="gaps-list"></div>
+            </div>
+
+            <div id="recommendations-container" class="recommendations-section" style="display: none;">
+                <h4><span class="section-icon-placeholder"></span>Anbefalte neste steg</h4>
+                <div id="recommendations-list-structured"></div>
+            </div>
+            
+            <div class="restart-container">
+                <button id="restart-btn" class="outline">Start på nytt</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    (function() {
+        'use strict';
+
+        const questions = [
+            { question: "Hvordan samler organisasjonen din data?", options: [{ text: "Hovedsakelig manuell datainnsamling i Excel eller papirbaserte skjemaer", score: 1 }, { text: "Flere digitale systemer, men data må ofte overføres manuelt mellom systemer", score: 2 }, { text: "Systematisk datainnsamling fra flere kilder, delvis automatisert", score: 3 }, { text: "Automatisert datainnsamling fra de fleste systemer med standardiserte prosesser", score: 4 }, { text: "Helautomatisert, sanntids datainnsamling med integrerte systemer", score: 5 }], category: "Datainnsamling" },
+            { question: "Hvordan analyseres data i organisasjonen?", options: [{ text: "Ad-hoc analyser, hovedsakelig i Excel når det er nødvendig", score: 1 }, { text: "Regelmessige rapporter produseres manuelt med basis statistikk", score: 2 }, { text: "Dashboards er etablert for viktige KPIer, noe prediksjon", score: 3 }, { text: "Avanserte analyser med både deskriptive og prediktive modeller", score: 4 }, { text: "KI og maskinlæring brukes aktivt til å optimalisere drift og beslutninger", score: 5 }], category: "Dataanalyse" },
+            { question: "Hvordan er datakvalitet og dataforvaltning håndtert?", options: [{ text: "Lite fokus på datakvalitet, ingen formelle prosesser", score: 1 }, { text: "Enkel kvalitetskontroll, men ingen klare ansvarsområder", score: 2 }, { text: "Definerte datakvalitetsprosesser for kritiske datasett", score: 3 }, { text: "Formell dataforvaltning med dedikerte roller og ansvar", score: 4 }, { text: "Omfattende datakvalitetsstyring integrert i alle prosesser", score: 5 }], category: "Dataprosesser" },
+            { question: "Hvordan er data og digitalisering forankret i virksomhetens strategi?", options: [{ text: "Ingen klar digital strategi eller visjon", score: 1 }, { text: "Basisk digital strategi, men ikke integrert med forretningsstrategien", score: 2 }, { text: "Digitaliseringsmål definert, med noe kobling til forretningsstrategi", score: 3 }, { text: "Data og digitalisering er en sentral del av forretningsstrategien", score: 4 }, { text: "Datadrevet innovasjon er kjernen i virksomhetens strategi og verdiskaping", score: 5 }], category: "Strategi" },
+            { question: "Hvordan er organisasjonens digitale kompetanse og kultur?", options: [{ text: "Lav digital kompetanse, motstand mot digitale endringer", score: 1 }, { text: "Noe digital kompetanse i IT-avdelingen, men begrenset ellers", score: 2 }, { text: "God digital kompetanse i flere avdelinger, økende aksept", score: 3 }, { text: "Sterk digital kompetanse på tvers av organisasjonen, aktiv læring", score: 4 }, { text: "Digital innovasjonskultur, høy kompetanse og kontinuerlig læring integrert", score: 5 }], category: "Organisasjon" }
+        ];
+
+        const levels = [
+            { name: "1. Lav digital modenhet", range: [5, 10], description: "Organisasjonen har begrenset digital modenhet med hovedsakelig manuelle prosesser og lite strukturert datainnsamling.", characteristics: ["All rapportering er manuell og tidkrevende", "Datakildene er spredt og ustrukturerte", "Ingen datainnsikt i sanntid", "Lav digital kompetanse i organisasjonen", "Fraværende strategi for digitalisering"], recommendations: ["Kartlegg nåværende manuelle prosesser for å identifisere digitaliseringsmuligheter", "Identifiser og prioriter områder for enkel digitalisering med rask gevinst", "Begynn med opplæring i grunnleggende digitale verktøy for ansatte", "Etabler en enkel digital strategi med klare mål for de neste 1-2 årene", "Vurder å rekruttere eller utvikle digital kompetanse i nøkkelposisjoner"], color: "#d73027"},
+            { name: "2. Fragmentert digitalisering", range: [11, 15], description: "Organisasjonen har begynt digitaliseringsreisen, men mangler helhetlig tilnærming og styring.", characteristics: ["Enkel digitalisering av enkelte prosesser", "Excel og manuelle datauttak dominerer", "Silobaserte systemer med lite integrasjon", "Mangler eierskap til data", "Begrenset strategi for digitalisering"], recommendations: ["Etabler en formell dataeierskap-struktur med roller og ansvar", "Kartlegg alle datasystemer og identifiser integrasjonsmuligheter", "Utvikle en helhetlig plan for å redusere manuelle overføringer mellom systemer", "Standardiser datadefinisjoner og format på tvers av avdelinger", "Invester i opplæring av mellomledere i dataanalyse og datadrevet beslutningsprosess"], color: "#fc8d59" },
+            { name: "3. Systematisert datainnsamling", range: [16, 20], description: "Organisasjonen har etablert systematisk datainnsamling og grunnleggende analyse, men har fortsatt rom for utvikling.", characteristics: ["Data samles systematisk fra flere kilder", "Dashboards er etablert for sentrale KPIer", "Enkle analyser muliggjøres", "Begynnende datakvalitetsstyring", "Digital strategi med noe kobling til forretning"], recommendations: ["Automatiser dataintegrasjon mellom systemer med API-er eller ETL-prosesser", "Utvikle mer avanserte analytiske kapabiliteter, inkludert prediktiv analyse", "Implementer formelle datakvalitetsprosesser med måling og rapportering", "Oppskalere digital kompetansebygging på tvers av organisasjonen", "Integrer datadrevne beslutningsprosesser i operasjonelle rutiner"], color: "#fee090" },
+            { name: "4. Proaktiv bruk av data", range: [21, 23], description: "Organisasjonen bruker data proaktivt til beslutningsstøtte og har etablert gode systemer for dataforvaltning.", characteristics: ["Automatisert datainnsamling fra de fleste kilder", "Forretningsprosesser støttes av sanntidsdata", "Beslutningsstøtte integrert i drift", "Avanserte analyser gjennomføres regelmessig", "Data og digitalisering sentral i strategien"], recommendations: ["Implementer maskinlæring og KI i utvalgte områder for ytterligere optimalisering", "Utvikle selvbetjeningsanalyse for forretningsbrukere i hele organisasjonen", "Etabler et formelt program for datadrevet innovasjon", "Utvid dataforvaltning til å inkludere eksterne dataprodukter og -tjenester", "Integrer datadrevet beslutningsprosess i alle aspekter av virksomheten"], color: "#91cf60" },
+            { name: "5. Datadrevet virksomhet", range: [24, 25], description: "Organisasjonen er fullt datadrevet med KI-integrasjon og optimalisering på tvers av verdikjeden.", characteristics: ["Data og KI integrert i forretningsstrategi", "Datadrevet innovasjon og optimalisering", "Eierskap og styring av data på plass", "Helautomatisert sanntids datainnsamling", "Digital innovasjonskultur i hele organisasjonen"], recommendations: ["Utvid KI-kapabilitetene til mer avanserte anvendelser som generativ KI", "Utforsk nye forretningsmuligheter basert på interne og eksterne data", "Etabler partnerskap for datadeling og økosystemutvikling", "Kontinuerlig optimalisering og innovasjon av datadrevne prosesser", "Utvikle og implementer etiske rammeverk for KI og databruk"], color: "#1a9850" }
+        ];
+        
+        const gapIconSvgString = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16v1a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2"></path><path d="M9 5h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path><polyline points="13 13 16 16 13 19"></polyline><polyline points="16 16 5 16"></polyline></svg>`;
+        const recommendationIconSvgString = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>`;
+
+
+        let currentQuestion = 0;
+        let answers = [];
+        let userScore = 0;
+
+        const introCard = document.getElementById('intro-card');
+        const questionContainer = document.getElementById('question-container');
+        const resultContainer = document.getElementById('result-container');
+        const questionsWrapper = document.getElementById('questions-wrapper');
+        const nextButton = document.getElementById('next-btn');
+        const prevButton = document.getElementById('prev-btn');
+        const startButton = document.getElementById('start-btn');
+        const restartButton = document.getElementById('restart-btn');
+        const progressBar = document.getElementById('progress');
+        
+        const levelNumberActualSpan = document.getElementById('level-number-actual');
+        const levelNameActualSpan = document.getElementById('level-name-actual');
+        const resultScoreSpan = document.getElementById('score');
+        const resultDescriptionP = document.getElementById('result-description');
+        
+        const toggleCharacteristicsBtn = document.getElementById('toggle-characteristics-btn');
+        const buttonTextPlaceholder = toggleCharacteristicsBtn.querySelector('.button-text-placeholder');
+        const levelDetailsContentDiv = document.getElementById('level-details-content');
+        const characteristicsUl = document.getElementById('level-characteristics');
+        
+        const recommendationsContainerDiv = document.getElementById('recommendations-container');
+        const recommendationsListStructured = document.getElementById('recommendations-list-structured');
+        const gapsContainerDiv = document.getElementById('gaps-container');
+        const gapsTitleH4 = document.getElementById('gaps-title');
+        const gapsListDiv = document.getElementById('gaps-list');
+        
+        const canvas = document.getElementById('result-canvas');
+        let ctx; 
+
+        startButton.addEventListener('click', startEvaluation);
+        nextButton.addEventListener('click', goToNextQuestion);
+        prevButton.addEventListener('click', goToPreviousQuestion);
+        restartButton.addEventListener('click', resetEvaluation);
+
+        if (toggleCharacteristicsBtn && levelDetailsContentDiv && buttonTextPlaceholder) {
+            toggleCharacteristicsBtn.addEventListener('click', () => {
+                const isHidden = levelDetailsContentDiv.hidden;
+                levelDetailsContentDiv.hidden = !isHidden;
+                toggleCharacteristicsBtn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+                
+                const arrowSpan = toggleCharacteristicsBtn.querySelector('.icon-toggle');
+
+                if (isHidden) {
+                    buttonTextPlaceholder.textContent = "Skjul kjennetegn";
+                    if(arrowSpan) arrowSpan.textContent = '▲';
+                } else {
+                    buttonTextPlaceholder.textContent = "Vis kjennetegn for nivået";
+                    if(arrowSpan) arrowSpan.textContent = '▼';
+                }
+            });
+        }
+
+        function startEvaluation() {
+            introCard.style.display = 'none';
+            resultContainer.style.display = 'none';
+            questionContainer.style.display = 'block';
+            currentQuestion = 0;
+            answers = Array(questions.length).fill(null);
+            userScore = 0;
+            loadQuestion(currentQuestion);
+            updateStepIndicator();
+            updateProgress();
+        }
+
+        function loadQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            currentQuestion = index;
+            const questionData = questions[index];
+            questionsWrapper.innerHTML = '';
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+            questionDiv.textContent = questionData.question;
+            questionsWrapper.appendChild(questionDiv);
+            const optionsDiv = document.createElement('div');
+            optionsDiv.classList.add('options');
+            questionData.options.forEach((option, i) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('option');
+                const optionContent = document.createElement('div');
+                optionContent.classList.add('option-content');
+                const levelIndicator = document.createElement('div');
+                levelIndicator.classList.add('level-indicator');
+                for (let level = 1; level <= 5; level++) {
+                    const levelCircle = document.createElement('div');
+                    levelCircle.classList.add('level-circle');
+                    if (level <= option.score) levelCircle.classList.add('filled');
+                    levelIndicator.appendChild(levelCircle);
+                }
+                optionContent.appendChild(levelIndicator);
+                const optionText = document.createElement('span');
+                optionText.textContent = option.text;
+                optionContent.appendChild(optionText);
+                optionElement.appendChild(optionContent);
+                if (answers[index] === i) optionElement.classList.add('selected');
+                optionElement.addEventListener('click', () => selectOption(i));
+                optionsDiv.appendChild(optionElement);
+            });
+            questionsWrapper.appendChild(optionsDiv);
+            prevButton.disabled = index === 0;
+            nextButton.disabled = answers[index] === null;
+            nextButton.textContent = (index === questions.length - 1) ? 'Se resultat' : 'Neste';
+            updateProgress();
+        }
+
+        function selectOption(optionIndex) {
+            answers[currentQuestion] = optionIndex;
+            const currentOptions = questionsWrapper.querySelectorAll('.option');
+            currentOptions.forEach((element, i) => {
+                element.classList.toggle('selected', i === optionIndex);
+            });
+            nextButton.disabled = false;
+        }
+
+        function goToNextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                showResult();
+            }
+            updateStepIndicator();
+        }
+
+        function goToPreviousQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+                updateStepIndicator();
+            }
+        }
+
+        function updateProgress() {
+            const progressPercentage = ((currentQuestion + 1) / questions.length) * 100;
+            progressBar.style.width = progressPercentage + '%';
+        }
+
+        function updateStepIndicator() {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((step, i) => {
+                step.classList.remove('active', 'completed');
+                if (i === currentQuestion) step.classList.add('active');
+                else if (i < currentQuestion) step.classList.add('completed');
+            });
+        }
+
+        function setIcon(titleElement, iconSvgString) {
+            if (titleElement) {
+                let iconPlaceholder = titleElement.querySelector('.section-icon-placeholder');
+                if (iconPlaceholder && !iconPlaceholder.querySelector('svg')) {
+                    iconPlaceholder.innerHTML = iconSvgString;
+                }
+            }
+        }
+        function clearIcon(titleElement){
+            if(titleElement){
+                let iconPlaceholder = titleElement.querySelector('.section-icon-placeholder');
+                if(iconPlaceholder) iconPlaceholder.innerHTML = '';
+            }
+        }
+
+        function showResult() {
+            userScore = calculateScore();
+            const userLevel = findLevel(userScore);
+            
+            questionContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+            
+            const levelNumberMatch = userLevel.name.match(/^(\d+)\./);
+            const levelNumberText = levelNumberMatch ? `nivå ${levelNumberMatch[1]}` : "";
+            const levelNameOnlyText = userLevel.name.replace(/^(\d+)\.\s*/, '');
+
+            if (levelNumberActualSpan) levelNumberActualSpan.textContent = levelNumberText;
+            if (levelNameActualSpan) levelNameActualSpan.textContent = levelNameOnlyText;
+            resultScoreSpan.textContent = userScore;
+            resultDescriptionP.textContent = userLevel.description;
+            
+            characteristicsUl.innerHTML = '';
+            if (userLevel.characteristics && userLevel.characteristics.length > 0 && buttonTextPlaceholder) {
+                userLevel.characteristics.forEach(char => {
+                    const li = document.createElement('li');
+                    li.textContent = char;
+                    characteristicsUl.appendChild(li);
+                });
+                toggleCharacteristicsBtn.style.display = 'inline-flex';
+                levelDetailsContentDiv.hidden = true; 
+                toggleCharacteristicsBtn.setAttribute('aria-expanded', 'false');
+                buttonTextPlaceholder.textContent = "Vis kjennetegn for nivået";
+                const arrowSpan = toggleCharacteristicsBtn.querySelector('.icon-toggle');
+                if(arrowSpan) arrowSpan.textContent = '▼';
+            } else {
+                toggleCharacteristicsBtn.style.display = 'none';
+                levelDetailsContentDiv.hidden = true;
+            }
+            
+            recommendationsListStructured.innerHTML = ''; 
+            if (userLevel.recommendations && userLevel.recommendations.length > 0) {
+                userLevel.recommendations.forEach(recText => {
+                    const recItem = document.createElement('div');
+                    recItem.classList.add('recommendation-item');
+                    recItem.textContent = recText;
+                    recommendationsListStructured.appendChild(recItem);
+                });
+                recommendationsContainerDiv.style.display = 'block';
+                setIcon(recommendationsContainerDiv.querySelector('h4'), recommendationIconSvgString);
+            } else {
+                recommendationsContainerDiv.style.display = 'none';
+            }
+            
+            const identifiedGaps = identifyGaps();
+            gapsListDiv.innerHTML = '';
+            if (identifiedGaps.length > 0) {
+                gapsContainerDiv.style.display = 'block';
+                setIcon(gapsTitleH4, gapIconSvgString);
+                
+                identifiedGaps.forEach(gap => {
+                    const gapItem = document.createElement('div');
+                    gapItem.classList.add('gap-item');
+                    gapItem.innerHTML = `
+                        <div class="gap-title">${gap.title}</div>
+                        <div class="gap-description">${gap.description}</div>
+                        <div class="gap-recommendation">${gap.recommendation}</div>`;
+                    gapsListDiv.appendChild(gapItem);
+                });
+            } else {
+                gapsContainerDiv.style.display = 'none';
+            }
+            
+            if (canvas) {
+                requestAnimationFrame(() => {
+                    drawResultVisualization(userScore, userLevel);
+                });
+            } else {
+                console.error('Canvas not available for drawing results.');
+            }
+        }
+        
+        function identifyGaps() {
+            const gaps = [];
+            if (answers.length !== questions.length || answers.some(a => a === null)) return gaps;
+            const scores = answers.map((ans, idx) => questions[idx].options[ans].score);
+            const [datainnsamlingScore, dataanalyseScore, dataprosesserScore, strategiScore, organisasjonScore] = scores;
+            if (organisasjonScore >= 4 && dataanalyseScore <= 2) gaps.push({ title: "Kompetanse og analysepraksis", description: "Din organisasjon oppgir høy digital kompetanse, men bruker relativt enkle analysemetoder.", recommendation: "Utnytt kompetansen bedre ved å implementere mer avanserte analyseverktøy og metodikker. Vurder opplæring i deskriptiv og prediktiv analyse." });
+            if (strategiScore >= 4 && datainnsamlingScore <= 2) gaps.push({ title: "Strategi og datainnsamling", description: "Deres strategi er datadrevet, men datainnsamlingen er hovedsakelig manuell eller fragmentert.", recommendation: "Automatiser datainnsamlingen for å realisere den datadrevne strategien. Invester i systemer som kan integrere datakilder og redusere manuelle overføringer." });
+            if (dataprosesserScore >= 4 && dataanalyseScore <= 2) gaps.push({ title: "Datakvalitetsstyring og analysekapasitet", description: "Organisasjonen har god kontroll på datakvalitet, men utnytter ikke denne kvaliteten i avanserte analyser.", recommendation: "Bygg videre på den gode datakvaliteten ved å utvikle mer sofistikerte analysekapabiliteter. Vurder dashboards eller prediktive analysemodeller." });
+            if (datainnsamlingScore >= 4 && dataanalyseScore <= 2) gaps.push({ title: "Datainnsamling og analyse", description: "Datainnsamlingen er automatisert, men analysemetodene er relativt grunnleggende.", recommendation: "Utnytt den automatiserte datainnsamlingen bedre gjennom mer avanserte analysemetoder. Vurder å implementere dashboards eller analytiske verktøy som kan gi dypere innsikt." });
+            if (strategiScore >= 4 && organisasjonScore <= 2) gaps.push({ title: "Strategi og organisasjonskultur", description: "Strategien er datadrevet, men organisasjonskulturen støtter ikke denne ambisjonen fullt ut.", recommendation: "Invester i digital kompetansebygging på tvers av organisasjonen. Vurder endringsledelse for å sikre at ansatte forstår og støtter den datadrevne visjonen." });
+            if (dataanalyseScore >= 4 && strategiScore <= 2) gaps.push({ title: "Analysekapasitet og strategisk utnyttelse", description: "Organisasjonen utfører avanserte analyser, men disse er ikke godt integrert i den overordnede strategien.", recommendation: "Koble analyseaktivitetene tydeligere til forretningsstrategien. Etabler prosesser for at analyseresultater påvirker strategiske beslutninger." });
+            return gaps;
+        }
+
+        function calculateScore() {
+            return answers.reduce((total, answerIndex, questionIndex) => {
+                if (answerIndex !== null) return total + questions[questionIndex].options[answerIndex].score;
+                return total;
+            }, 0);
+        }
+
+        function findLevel(score) {
+            return levels.find(level => score >= level.range[0] && score <= level.range[1]) || levels[0];
+        }
+
+        function drawResultVisualization(score, userLevelObj) {
+            if (!canvas || canvas.offsetWidth === 0) {
+                console.warn("Canvas not ready or not visible for drawing.");
+                return;
+            }
+            ctx = canvas.getContext('2d');
+            if (!ctx) {
+                console.error("Could not get canvas context.");
+                return;
+            }
+            const dpr = window.devicePixelRatio || 1;
+            const width = canvas.offsetWidth;
+            const height = canvas.offsetHeight;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            ctx.clearRect(0, 0, width, height);
+
+            const padding = 30;
+            const stepHeight = (height - 2 * padding) / 5;
+            const stepWidthBase = width - 2 * padding;
+            const stepWidths = [1, 0.84, 0.68, 0.52, 0.36].map(f => stepWidthBase * f);
+
+            for (let i = 0; i < 5; i++) {
+                const y = height - padding - (i + 1) * stepHeight;
+                const w = stepWidths[i];
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(padding + w, y);
+                ctx.lineTo(padding + w, y + stepHeight);
+                ctx.lineTo(padding, y + stepHeight);
+                ctx.closePath();
+                ctx.fillStyle = (levels[i] === userLevelObj) ? levels[i].color : hexToRgba(levels[i].color, 0.4);
+                ctx.fill();
+                ctx.strokeStyle = "#fff";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.font = "bold 16px Arial";
+                ctx.fillStyle = "#fff";
+                ctx.textAlign = "left";
+                ctx.textBaseline = "middle";
+                const displayName = levels[i].name.replace(/^[0-9]+\.\s*/, ''); 
+                ctx.fillText(`${i + 1}. ${displayName}`, padding + 10, y + stepHeight / 2);
+            }
+
+            const userLevelIdx = levels.findIndex(l => l === userLevelObj);
+            if (userLevelIdx !== -1) {
+                const y = height - padding - (userLevelIdx + 1) * stepHeight + stepHeight / 2;
+                const w = stepWidths[userLevelIdx];
+                const markerX = padding + w - 25;
+                ctx.beginPath();
+                ctx.moveTo(markerX, y - 40); 
+                ctx.lineTo(markerX, y - 26); 
+                ctx.strokeStyle = "#3b82f6"; 
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(markerX - 7, y - 35); 
+                ctx.lineTo(markerX, y - 25);     
+                ctx.lineTo(markerX + 7, y - 35); 
+                ctx.closePath();
+                ctx.fillStyle = "#3b82f6";
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(markerX, y, 16, 0, Math.PI * 2);
+                ctx.fillStyle = "#3b82f6"; 
+                ctx.fill();
+                ctx.strokeStyle = "#fff"; 
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                ctx.fillStyle = "#fff"; 
+                ctx.font = "bold 15px Arial";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText("Du", markerX, y);
+            }
+        }
+
+        function hexToRgba(hex, alpha) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r},${g},${b},${alpha})`;
+        }
+
+        function resetEvaluation() {
+            resultContainer.style.display = 'none';
+            questionContainer.style.display = 'none';
+            introCard.style.display = 'block';
+            currentQuestion = 0;
+            answers = Array(questions.length).fill(null);
+            userScore = 0;
+            progressBar.style.width = '0%';
+            const steps = document.querySelectorAll('.step');
+            steps.forEach(step => step.classList.remove('active', 'completed'));
+            nextButton.textContent = 'Neste';
+            prevButton.disabled = true;
+            nextButton.disabled = true;
+            questionsWrapper.innerHTML = '';
+            characteristicsUl.innerHTML = '';
+            
+            if (toggleCharacteristicsBtn && levelDetailsContentDiv && buttonTextPlaceholder) {
+                levelDetailsContentDiv.hidden = true;
+                toggleCharacteristicsBtn.setAttribute('aria-expanded', 'false');
+                toggleCharacteristicsBtn.style.display = 'none';
+                buttonTextPlaceholder.textContent = "Vis kjennetegn for nivået";
+                const arrowSpan = toggleCharacteristicsBtn.querySelector('.icon-toggle');
+                if(arrowSpan) arrowSpan.textContent = '▼';
+            }
+
+            if (recommendationsListStructured) recommendationsListStructured.innerHTML = '';
+            if (recommendationsContainerDiv) {
+                recommendationsContainerDiv.style.display = 'none';
+                clearIcon(recommendationsContainerDiv.querySelector('h4'));
+            }
+            
+            gapsListDiv.innerHTML = '';
+            gapsContainerDiv.style.display = 'none';
+            clearIcon(gapsTitleH4);
+
+
+            if (canvas && canvas.getContext('2d')) {
+                const tempCtx = canvas.getContext('2d');
+                tempCtx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+    })();
+    </script>
+</body>
+</html>
