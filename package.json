@@ -5,5 +5,8 @@
   "scripts": {
     "start": "node server.js",
     "test": "node tests/server.test.js && node test/orLogic.test.js"
+  },
+  "dependencies": {
+    "@vercel/og": "^0.6.8"
   }
 }
