@@ -34,3 +34,11 @@ test('GET /api/questions returns JSON', async () => {
 test('GET /api/levels returns JSON', async () => {
   await fetchJSON('/api/levels');
 });
+
+test('GET /api/og returns an image', async () => {
+  const res = await fetch(`http://localhost:${port}/api/og?title=test`);
+  assert.strictEqual(res.status, 200);
+  assert.strictEqual(res.headers.get('content-type'), 'image/png');
+  const buf = await res.arrayBuffer();
+  assert.ok(buf.byteLength > 0);
+});

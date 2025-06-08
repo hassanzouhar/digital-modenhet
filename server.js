@@ -2,6 +2,8 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const React = require('react');
+const { unstable_createNodejsStream } = require('@vercel/og');
 
 const PORT = process.env.PORT || 3000;
 const dataDir = path.join(__dirname, 'data');
@@ -92,6 +94,42 @@ function saveResponse(body, res) {
   });
 }
 
+async function handleOgRequest(res, query) {
+  try {
+    const title = query.title || 'Digital Modenhet';
+    const element = React.createElement(
+      'div',
+      {
+        style: {
+          fontSize: 64,
+          color: 'black',
+          background: 'white',
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }
+      },
+      title
+    );
+    const stream = await unstable_createNodejsStream(element, {
+      width: 1200,
+      height: 630
+    });
+
+    res.writeHead(200, {
+      'Content-Type': 'image/png',
+      'Cache-Control': 'public, max-age=31536000, immutable'
+    });
+    stream.pipe(res);
+  } catch (err) {
+    console.error('OG generation failed:', err);
+    res.writeHead(500);
+    res.end('Error generating image');
+  }
+}
+
 const staticBasePath = path.resolve(__dirname);
 
 function serveStatic(res, pathname) {
@@ -130,6 +168,8 @@ const server = http.createServer((req, res) => {
         return sendCachedJSON(res, 'levels');
       case '/api/config':
         return sendCachedJSON(res, 'config');
+      case '/api/og':
+        return handleOgRequest(res, parsedUrl.query);
       default:
         return serveStatic(res, parsedUrl.pathname);
     }

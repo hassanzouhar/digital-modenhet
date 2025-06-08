@@ -56,3 +56,14 @@ Reference the function from your `<head>` tags:
 ```
 
 The URL parameters allow you to adjust the text or other values dynamically.
+
+## Local Node server
+
+This repository's `server.js` exposes the same functionality for local testing.
+After running `npm start`, visit:
+
+```
+http://localhost:3000/api/og?title=Hello
+```
+
+The server will return a PNG image containing the provided title.
