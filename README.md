@@ -64,6 +64,7 @@ Planen for videre utvikling inkluderer:
     *   Mulighet for benchmarking mot bransje eller andre bedrifter (krever datainnsamling og backend).
 ---
 *   **Rapportering:** Generere en nedlastbar PDF-rapport av resultatene.
+*   **Dynamiske Open Graph-bilder:** Se `docs/og-image-generation.md` for hvordan `@vercel/og` kan brukes til å lage sosiale kort direkte via Vercel Functions.
 
 ## Bidrag
 
