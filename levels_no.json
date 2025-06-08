@@ -1,72 +1,515 @@
 [
-    { 
-        "name": "1. Lav digital modenhet", 
-        "range": [5, 10], 
-        "description": "Organisasjonen har begrenset digital modenhet med hovedsakelig manuelle prosesser og lite strukturert datainnsamling.", 
-        "characteristics": ["All rapportering er manuell og tidkrevende", "Datakildene er spredt og ustrukturerte", "Ingen datainnsikt i sanntid", "Lav digital kompetanse i organisasjonen", "Fraværende strategi for digitalisering"], 
+    {
+        "name": "1. Lav digital modenhet",
+        "range": [
+            5,
+            10
+        ],
+        "description": "Organisasjonen har begrenset digital modenhet med hovedsakelig manuelle prosesser og lite strukturert datainnsamling.",
+        "characteristics": [
+            "All rapportering er manuell og tidkrevende",
+            "Datakildene er spredt og ustrukturerte",
+            "Ingen datainnsikt i sanntid",
+            "Lav digital kompetanse i organisasjonen",
+            "Fraværende strategi for digitalisering"
+        ],
         "recommendations": [
-            { "text": "Kartlegg nåværende manuelle prosesser for å identifisere digitaliseringsmuligheter", "tags": ["Datainnsamling", "Dataprosesser"], "addressesGaps": ["gap_strategi_vs_innsamling"] },
-            { "text": "Identifiser og prioriter områder for enkel digitalisering med rask gevinst", "tags": ["Strategi", "Dataprosesser"], "addressesGaps": [] },
-            { "text": "Begynn med opplæring i grunnleggende digitale verktøy for ansatte", "tags": ["Organisasjon"], "addressesGaps": ["gap_system_vs_menneske", "gap_strategi_vs_kultur"] },
-            { "text": "Etabler en enkel digital strategi med klare mål for de neste 1-2 årene", "tags": ["Strategi"], "addressesGaps": ["gap_operativ_vs_strategi", "gap_analyse_vs_strategi"] },
-            { "text": "Vurder å rekruttere eller utvikle digital kompetanse i nøkkelposisjoner", "tags": ["Organisasjon", "Strategi"], "addressesGaps": ["gap_system_vs_menneske", "gap_kompetanse_vs_analyse"] }
-        ], 
+            {
+                "text": "Kartlegg nåværende manuelle prosesser for å identifisere digitaliseringsmuligheter",
+                "tags": [
+                    "Datainnsamling",
+                    "Dataprosesser"
+                ],
+                "addressesGaps": [
+                    "gap_strategi_vs_innsamling"
+                ],
+                "resources": [
+                    {
+                        "title": "Guide til prosesskartlegging (Nivå 1, Anb. 1)",
+                        "url": "https://example.com/guide-prosesskartlegging-1-1"
+                    },
+                    {
+                        "title": "Verktøy for digitalisering (Nivå 1, Anb. 1)",
+                        "url": "https://example.com/verktoy-digitalisering-1-1"
+                    }
+                ]
+            },
+            {
+                "text": "Identifiser og prioriter områder for enkel digitalisering med rask gevinst",
+                "tags": [
+                    "Strategi",
+                    "Dataprosesser"
+                ],
+                "addressesGaps": [],
+                "resources": [
+                    {
+                        "title": "Strategier for rask gevinst (Nivå 1, Anb. 2)",
+                        "url": "https://example.com/strategier-gevinst-1-2"
+                    }
+                ]
+            },
+            {
+                "text": "Begynn med opplæring i grunnleggende digitale verktøy for ansatte",
+                "tags": [
+                    "Organisasjon"
+                ],
+                "addressesGaps": [
+                    "gap_system_vs_menneske",
+                    "gap_strategi_vs_kultur"
+                ],
+                "resources": [
+                    {
+                        "title": "Kurs i digitale verktøy (Nivå 1, Anb. 3)",
+                        "url": "https://example.com/kurs-digitale-verktoy-1-3"
+                    },
+                    {
+                        "title": "Ekstra Ressurs 2 (Nivå 1, Anb. 3)",
+                        "url": "https://example.com/extra-resource-1-3-2"
+                    }
+                ]
+            },
+            {
+                "text": "Etabler en enkel digital strategi med klare mål for de neste 1-2 årene",
+                "tags": [
+                    "Strategi"
+                ],
+                "addressesGaps": [
+                    "gap_operativ_vs_strategi",
+                    "gap_analyse_vs_strategi"
+                ],
+                "resources": [
+                    {
+                        "title": "Mal for digital strategi (Nivå 1, Anb. 4)",
+                        "url": "https://example.com/mal-digital-strategi-1-4"
+                    }
+                ]
+            },
+            {
+                "text": "Vurder å rekruttere eller utvikle digital kompetanse i nøkkelposisjoner",
+                "tags": [
+                    "Organisasjon",
+                    "Strategi"
+                ],
+                "addressesGaps": [
+                    "gap_system_vs_menneske",
+                    "gap_kompetanse_vs_analyse"
+                ],
+                "resources": [
+                    {
+                        "title": "Tips for rekruttering (Nivå 1, Anb. 5)",
+                        "url": "https://example.com/tips-rekruttering-1-5"
+                    },
+                    {
+                        "title": "Ekstra Ressurs 2 (Nivå 1, Anb. 5)",
+                        "url": "https://example.com/extra-resource-1-5-2"
+                    }
+                ]
+            }
+        ],
         "color": "#d73027"
     },
-    { 
-        "name": "2. Fragmentert digitalisering", 
-        "range": [11, 15], 
-        "description": "Organisasjonen har begynt digitaliseringsreisen, men mangler helhetlig tilnærming og styring.", 
-        "characteristics": ["Enkel digitalisering av enkelte prosesser", "Excel og manuelle datauttak dominerer", "Silobaserte systemer med lite integrasjon", "Mangler eierskap til data", "Begrenset strategi for digitalisering"], 
+    {
+        "name": "2. Fragmentert digitalisering",
+        "range": [
+            11,
+            15
+        ],
+        "description": "Organisasjonen har begynt digitaliseringsreisen, men mangler helhetlig tilnærming og styring.",
+        "characteristics": [
+            "Enkel digitalisering av enkelte prosesser",
+            "Excel og manuelle datauttak dominerer",
+            "Silobaserte systemer med lite integrasjon",
+            "Mangler eierskap til data",
+            "Begrenset strategi for digitalisering"
+        ],
         "recommendations": [
-            { "text": "Etabler en formell dataeierskap-struktur med roller og ansvar", "tags": ["Dataprosesser", "Organisasjon"], "addressesGaps": ["gap_datavolum_vs_kontroll"] },
-            { "text": "Kartlegg alle datasystemer og identifiser integrasjonsmuligheter", "tags": ["Datainnsamling", "Strategi"], "addressesGaps": ["gap_strategi_vs_innsamling"] },
-            { "text": "Utvikle en helhetlig plan for å redusere manuelle overføringer mellom systemer", "tags": ["Dataprosesser"], "addressesGaps": [] },
-            { "text": "Standardiser datadefinisjoner og format på tvers av avdelinger", "tags": ["Dataprosesser"], "addressesGaps": ["gap_datavolum_vs_kontroll", "gap_kvalitet_vs_analysekapasitet"] },
-            { "text": "Invester i opplæring av mellomledere i dataanalyse og datadrevet beslutningsprosess", "tags": ["Organisasjon", "Dataanalyse"], "addressesGaps": ["gap_kompetanse_vs_analyse", "gap_system_vs_menneske"] }
-        ], 
-        "color": "#fc8d59" 
+            {
+                "text": "Etabler en formell dataeierskap-struktur med roller og ansvar",
+                "tags": [
+                    "Dataprosesser",
+                    "Organisasjon"
+                ],
+                "addressesGaps": [
+                    "gap_datavolum_vs_kontroll"
+                ],
+                "resources": [
+                    {
+                        "title": "Guide til dataeierskap (Nivå 2, Anb. 1)",
+                        "url": "https://example.com/guide-dataeierskap-2-1"
+                    },
+                    {
+                        "title": "Ekstra Ressurs 2 (Nivå 2, Anb. 1)",
+                        "url": "https://example.com/extra-resource-2-1-2"
+                    }
+                ]
+            },
+            {
+                "text": "Kartlegg alle datasystemer og identifiser integrasjonsmuligheter",
+                "tags": [
+                    "Datainnsamling",
+                    "Strategi"
+                ],
+                "addressesGaps": [
+                    "gap_strategi_vs_innsamling"
+                ],
+                "resources": [
+                    {
+                        "title": "Systemkartlegging (Nivå 2, Anb. 2)",
+                        "url": "https://example.com/systemkartlegging-2-2"
+                    }
+                ]
+            },
+            {
+                "text": "Utvikle en helhetlig plan for å redusere manuelle overføringer mellom systemer",
+                "tags": [
+                    "Dataprosesser"
+                ],
+                "addressesGaps": [],
+                "resources": [
+                    {
+                        "title": "Plan for automatisering (Nivå 2, Anb. 3)",
+                        "url": "https://example.com/plan-automatisering-2-3"
+                    },
+                    {
+                        "title": "Ekstra Ressurs 2 (Nivå 2, Anb. 3)",
+                        "url": "https://example.com/extra-resource-2-3-2"
+                    }
+                ]
+            },
+            {
+                "text": "Standardiser datadefinisjoner og format på tvers av avdelinger",
+                "tags": [
+                    "Dataprosesser"
+                ],
+                "addressesGaps": [
+                    "gap_datavolum_vs_kontroll",
+                    "gap_kvalitet_vs_analysekapasitet"
+                ],
+                "resources": [
+                    {
+                        "title": "Datastandardisering (Nivå 2, Anb. 4)",
+                        "url": "https://example.com/datastandardisering-2-4"
+                    }
+                ]
+            },
+            {
+                "text": "Invester i opplæring av mellomledere i dataanalyse og datadrevet beslutningsprosess",
+                "tags": [
+                    "Organisasjon",
+                    "Dataanalyse"
+                ],
+                "addressesGaps": [
+                    "gap_kompetanse_vs_analyse",
+                    "gap_system_vs_menneske"
+                ],
+                "resources": [
+                    {
+                        "title": "Kurs for mellomledere (Nivå 2, Anb. 5)",
+                        "url": "https://example.com/kurs-mellomledere-2-5"
+                    },
+                    {
+                        "title": "Ekstra Ressurs 2 (Nivå 2, Anb. 5)",
+                        "url": "https://example.com/extra-resource-2-5-2"
+                    }
+                ]
+            }
+        ],
+        "color": "#fc8d59"
     },
-    { 
-        "name": "3. Systematisert datainnsamling", 
-        "range": [16, 20], 
-        "description": "Organisasjonen har etablert systematisk datainnsamling og grunnleggende analyse, men har fortsatt rom for utvikling.", 
-        "characteristics": ["Data samles systematisk fra flere kilder", "Dashboards er etablert for sentrale KPIer", "Enkle analyser muliggjøres", "Begynnende datakvalitetsstyring", "Digital strategi med noe kobling til forretning"], 
+    {
+        "name": "3. Systematisert datainnsamling",
+        "range": [
+            16,
+            20
+        ],
+        "description": "Organisasjonen har etablert systematisk datainnsamling og grunnleggende analyse, men har fortsatt rom for utvikling.",
+        "characteristics": [
+            "Data samles systematisk fra flere kilder",
+            "Dashboards er etablert for sentrale KPIer",
+            "Enkle analyser muliggjøres",
+            "Begynnende datakvalitetsstyring",
+            "Digital strategi med noe kobling til forretning"
+        ],
         "recommendations": [
-            {"text":"Automatiser dataintegrasjon mellom systemer med API-er eller ETL-prosesser", "tags":["Datainnsamling", "Dataprosesser"], "addressesGaps":["gap_strategi_vs_innsamling"]}, 
-            {"text":"Utvikle mer avanserte analytiske kapabiliteter, inkludert prediktiv analyse", "tags":["Dataanalyse"], "addressesGaps":["gap_datainnsamling_vs_analyse", "gap_kvalitet_vs_analysekapasitet"]}, 
-            {"text":"Implementer formelle datakvalitetsprosesser med måling og rapportering", "tags":["Dataprosesser"], "addressesGaps":["gap_datavolum_vs_kontroll"]}, 
-            {"text":"Oppskalere digital kompetansebygging på tvers av organisasjonen", "tags":["Organisasjon"], "addressesGaps":["gap_strategi_vs_kultur", "gap_system_vs_menneske"]}, 
-            {"text":"Integrer datadrevne beslutningsprosesser i operasjonelle rutiner", "tags":["Strategi", "Dataanalyse"], "addressesGaps":["gap_analyse_vs_strategi"]}
-        ], 
-        "color": "#fee090" 
+            {
+                "text": "Automatiser dataintegrasjon mellom systemer med API-er eller ETL-prosesser",
+                "tags": [
+                    "Datainnsamling",
+                    "Dataprosesser"
+                ],
+                "addressesGaps": [
+                    "gap_strategi_vs_innsamling"
+                ],
+                "resources": [
+                    {
+                        "title": "API og ETL guider (Nivå 3, Anb. 1)",
+                        "url": "https://example.com/api-etl-guide-3-1"
+                    },
+                    {
+                        "title": "Ekstra Ressurs 2 (Nivå 3, Anb. 1)",
+                        "url": "https://example.com/extra-resource-3-1-2"
+                    }
+                ]
+            },
+            {
+                "text": "Utvikle mer avanserte analytiske kapabiliteter, inkludert prediktiv analyse",
+                "tags": [
+                    "Dataanalyse"
+                ],
+                "addressesGaps": [
+                    "gap_datainnsamling_vs_analyse",
+                    "gap_kvalitet_vs_analysekapasitet"
+                ],
+                "resources": [
+                    {
+                        "title": "Prediktiv analyse kurs (Nivå 3, Anb. 2)",
+                        "url": "https://example.com/prediktiv-analyse-kurs-3-2"
+                    }
+                ]
+            },
+            {
+                "text": "Implementer formelle datakvalitetsprosesser med måling og rapportering",
+                "tags": [
+                    "Dataprosesser"
+                ],
+                "addressesGaps": [
+                    "gap_datavolum_vs_kontroll"
+                ],
+                "resources": [
+                    {
+                        "title": "Datakvalitetsprosesser (Nivå 3, Anb. 3)",
+                        "url": "https://example.com/datakvalitet-3-3"
+                    },
+                    {
+                        "title": "Ekstra Ressurs 2 (Nivå 3, Anb. 3)",
+                        "url": "https://example.com/extra-resource-3-3-2"
+                    }
+                ]
+            },
+            {
+                "text": "Oppskalere digital kompetansebygging på tvers av organisasjonen",
+                "tags": [
+                    "Organisasjon"
+                ],
+                "addressesGaps": [
+                    "gap_strategi_vs_kultur",
+                    "gap_system_vs_menneske"
+                ],
+                "resources": [
+                    {
+                        "title": "Kompetansebyggingsplan (Nivå 3, Anb. 4)",
+                        "url": "https://example.com/kompetansebygging-3-4"
+                    }
+                ]
+            },
+            {
+                "text": "Integrer datadrevne beslutningsprosesser i operasjonelle rutiner",
+                "tags": [
+                    "Strategi",
+                    "Dataanalyse"
+                ],
+                "addressesGaps": [
+                    "gap_analyse_vs_strategi"
+                ],
+                "resources": [
+                    {
+                        "title": "Datadrevne beslutninger (Nivå 3, Anb. 5)",
+                        "url": "https://example.com/datadrevne-beslutninger-3-5"
+                    },
+                    {
+                        "title": "Ekstra Ressurs 2 (Nivå 3, Anb. 5)",
+                        "url": "https://example.com/extra-resource-3-5-2"
+                    }
+                ]
+            }
+        ],
+        "color": "#fee090"
     },
-    { 
-        "name": "4. Proaktiv bruk av data", 
-        "range": [21, 23], 
-        "description": "Organisasjonen bruker data proaktivt til beslutningsstøtte og har etablert gode systemer for dataforvaltning.", 
-        "characteristics": ["Automatisert datainnsamling fra de fleste kilder", "Forretningsprosesser støttes av sanntidsdata", "Beslutningsstøtte integrert i drift", "Avanserte analyser gjennomføres regelmessig", "Data og digitalisering sentral i strategien"], 
+    {
+        "name": "4. Proaktiv bruk av data",
+        "range": [
+            21,
+            23
+        ],
+        "description": "Organisasjonen bruker data proaktivt til beslutningsstøtte og har etablert gode systemer for dataforvaltning.",
+        "characteristics": [
+            "Automatisert datainnsamling fra de fleste kilder",
+            "Forretningsprosesser støttes av sanntidsdata",
+            "Beslutningsstøtte integrert i drift",
+            "Avanserte analyser gjennomføres regelmessig",
+            "Data og digitalisering sentral i strategien"
+        ],
         "recommendations": [
-            {"text":"Implementer maskinlæring og KI i utvalgte områder for ytterligere optimalisering", "tags":["Dataanalyse", "Strategi"]}, 
-            {"text":"Utvikle selvbetjeningsanalyse for forretningsbrukere i hele organisasjonen", "tags":["Organisasjon", "Dataanalyse"]}, 
-            {"text":"Etabler et formelt program for datadrevet innovasjon", "tags":["Strategi", "Organisasjon"]}, 
-            {"text":"Utvid dataforvaltning til å inkludere eksterne dataprodukter og -tjenester", "tags":["Dataprosesser"]}, 
-            {"text":"Integrer datadrevet beslutningsprosess i alle aspekter av virksomheten", "tags":["Strategi"]}
-        ], 
-        "color": "#91cf60" 
+            {
+                "text": "Implementer maskinlæring og KI i utvalgte områder for ytterligere optimalisering",
+                "tags": [
+                    "Dataanalyse",
+                    "Strategi"
+                ],
+                "resources": [
+                    {
+                        "title": "Introduksjon til KI (Nivå 4, Anb. 1)",
+                        "url": "https://example.com/introduksjon-ki-4-1"
+                    },
+                    {
+                        "title": "Maskinlæringsmodeller (Nivå 4, Anb. 1)",
+                        "url": "https://example.com/ml-modeller-4-1"
+                    }
+                ]
+            },
+            {
+                "text": "Utvikle selvbetjeningsanalyse for forretningsbrukere i hele organisasjonen",
+                "tags": [
+                    "Organisasjon",
+                    "Dataanalyse"
+                ],
+                "resources": [
+                    {
+                        "title": "Selvbetjenings BI (Nivå 4, Anb. 2)",
+                        "url": "https://example.com/selvbetjening-bi-4-2"
+                    }
+                ]
+            },
+            {
+                "text": "Etabler et formelt program for datadrevet innovasjon",
+                "tags": [
+                    "Strategi",
+                    "Organisasjon"
+                ],
+                "resources": [
+                    {
+                        "title": "Innovasjonsprogram (Nivå 4, Anb. 3)",
+                        "url": "https://example.com/innovasjonsprogram-4-3"
+                    },
+                    {
+                        "title": "Ekstra Ressurs 2 (Nivå 4, Anb. 3)",
+                        "url": "https://example.com/extra-resource-4-3-2"
+                    }
+                ]
+            },
+            {
+                "text": "Utvid dataforvaltning til å inkludere eksterne dataprodukter og -tjenester",
+                "tags": [
+                    "Dataprosesser"
+                ],
+                "resources": [
+                    {
+                        "title": "Eksterne datakilder (Nivå 4, Anb. 4)",
+                        "url": "https://example.com/eksterne-data-4-4"
+                    }
+                ]
+            },
+            {
+                "text": "Integrer datadrevet beslutningsprosess i alle aspekter av virksomheten",
+                "tags": [
+                    "Strategi"
+                ],
+                "resources": [
+                    {
+                        "title": "Total dataintegrering (Nivå 4, Anb. 5)",
+                        "url": "https://example.com/total-dataintegrering-4-5"
+                    },
+                    {
+                        "title": "Ekstra Ressurs 2 (Nivå 4, Anb. 5)",
+                        "url": "https://example.com/extra-resource-4-5-2"
+                    }
+                ]
+            }
+        ],
+        "color": "#91cf60"
     },
-    { 
-        "name": "5. Datadrevet virksomhet", 
-        "range": [24, 25], 
-        "description": "Organisasjonen er fullt datadrevet med KI-integrasjon og optimalisering på tvers av verdikjeden.", 
-        "characteristics": ["Data og KI integrert i forretningsstrategi", "Datadrevet innovasjon og optimalisering", "Eierskap og styring av data på plass", "Helautomatisert sanntids datainnsamling", "Digital innovasjonskultur i hele organisasjonen"], 
+    {
+        "name": "5. Datadrevet virksomhet",
+        "range": [
+            24,
+            25
+        ],
+        "description": "Organisasjonen er fullt datadrevet med KI-integrasjon og optimalisering på tvers av verdikjeden.",
+        "characteristics": [
+            "Data og KI integrert i forretningsstrategi",
+            "Datadrevet innovasjon og optimalisering",
+            "Eierskap og styring av data på plass",
+            "Helautomatisert sanntids datainnsamling",
+            "Digital innovasjonskultur i hele organisasjonen"
+        ],
         "recommendations": [
-            {"text":"Utvid KI-kapabilitetene til mer avanserte anvendelser som generativ KI", "tags":["Dataanalyse", "Strategi"]}, 
-            {"text":"Utforsk nye forretningsmuligheter basert på interne og eksterne data", "tags":["Strategi"]}, 
-            {"text":"Etabler partnerskap for datadeling og økosystemutvikling", "tags":["Strategi", "Dataprosesser"]}, 
-            {"text":"Kontinuerlig optimalisering og innovasjon av datadrevne prosesser", "tags":["Dataprosesser", "Strategi"]}, 
-            {"text":"Utvikle og implementer etiske rammeverk for KI og databruk", "tags":["Organisasjon", "Dataprosesser"]}
-        ], 
-        "color": "#1a9850" 
+            {
+                "text": "Utvid KI-kapabilitetene til mer avanserte anvendelser som generativ KI",
+                "tags": [
+                    "Dataanalyse",
+                    "Strategi"
+                ],
+                "resources": [
+                    {
+                        "title": "Generativ KI (Nivå 5, Anb. 1)",
+                        "url": "https://example.com/generativ-ki-5-1"
+                    },
+                    {
+                        "title": "Ekstra Ressurs 2 (Nivå 5, Anb. 1)",
+                        "url": "https://example.com/extra-resource-5-1-2"
+                    }
+                ]
+            },
+            {
+                "text": "Utforsk nye forretningsmuligheter basert på interne og eksterne data",
+                "tags": [
+                    "Strategi"
+                ],
+                "resources": [
+                    {
+                        "title": "Nye forretningsmodeller (Nivå 5, Anb. 2)",
+                        "url": "https://example.com/nye-forretningsmodeller-5-2"
+                    }
+                ]
+            },
+            {
+                "text": "Etabler partnerskap for datadeling og økosystemutvikling",
+                "tags": [
+                    "Strategi",
+                    "Dataprosesser"
+                ],
+                "resources": [
+                    {
+                        "title": "Datadelingsplattformer (Nivå 5, Anb. 3)",
+                        "url": "https://example.com/datadeling-5-3"
+                    },
+                    {
+                        "title": "Ekstra Ressurs 2 (Nivå 5, Anb. 3)",
+                        "url": "https://example.com/extra-resource-5-3-2"
+                    }
+                ]
+            },
+            {
+                "text": "Kontinuerlig optimalisering og innovasjon av datadrevne prosesser",
+                "tags": [
+                    "Dataprosesser",
+                    "Strategi"
+                ],
+                "resources": [
+                    {
+                        "title": "Kontinuerlig forbedring (Nivå 5, Anb. 4)",
+                        "url": "https://example.com/kontinuerlig-forbedring-5-4"
+                    }
+                ]
+            },
+            {
+                "text": "Utvikle og implementer etiske rammeverk for KI og databruk",
+                "tags": [
+                    "Organisasjon",
+                    "Dataprosesser"
+                ],
+                "resources": [
+                    {
+                        "title": "KI-etikk (Nivå 5, Anb. 5)",
+                        "url": "https://example.com/ki-etikk-5-5"
+                    },
+                    {
+                        "title": "Retningslinjer for databruk (Nivå 5, Anb. 5)",
+                        "url": "https://example.com/retningslinjer-databruk-5-5"
+                    }
+                ]
+            }
+        ],
+        "color": "#1a9850"
     }
 ]
