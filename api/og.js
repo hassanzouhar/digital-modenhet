@@ -1,10 +1,10 @@
-import { ImageResponse } from '@vercel/og';
+const { ImageResponse } = require('@vercel/og');
 
-export const config = {
+module.exports.config = {
   runtime: 'edge',
 };
 
-export default function handler(req) {
+module.exports.default = function handler(req) {
   const { searchParams } = new URL(req.url);
   const title = searchParams.get('title') || 'Digital Modenhet';
 
