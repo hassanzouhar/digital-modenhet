@@ -1,9 +1,9 @@
 # Dynamic Open Graph (OG) Image Generation
 
-This project can be extended with dynamic social card images. Vercel provides the [`@vercel/og`](https://vercel.com/docs/functions/og-image-generation) library that runs in Edge Functions and lets you generate images on the fly.
+This project can be extended with dynamic social card images. Vercel provides the [`@vercel/og`](https://vercel.com/docs/functions/og-image-generation) library that runs in Edge Functions and lets you generate images on the fly. A ready-made `api/og.js` file is included in this repository as a starting point
 
 ## Install the library
-
+    
 ```bash
 npm install @vercel/og
 ```
