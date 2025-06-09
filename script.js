@@ -73,11 +73,36 @@
     const gapsContainerDiv = document.getElementById('gaps-container');
     const gapsTitleH4 = document.getElementById('gaps-title');
     const gapsListDiv = document.getElementById('gaps-list');
-    const maturityProfileDisplayDiv = document.getElementById('maturity-profile-display');
+    // const maturityProfileDisplayDiv = document.getElementById('maturity-profile-display'); // Old version
+    const maturityProfileContainerDiv = document.getElementById('maturity-profile-container');
+    const maturityProfileNameEl = document.getElementById('maturity-profile-name');
+    const maturityProfileDescriptionEl = document.getElementById('maturity-profile-description');
+    const maturityProfileStrengthsUl = document.getElementById('maturity-profile-strengths');
+    const maturityProfilePitfallsUl = document.getElementById('maturity-profile-pitfalls');
     const canvas = document.getElementById('result-canvas');
     const radarCanvas = document.getElementById('radar-chart');
     let ctx; 
     let radarCtx;
+
+    // Feedback elements
+    const feedbackYesBtn = document.getElementById('feedback-yes-btn');
+    const feedbackNoBtn = document.getElementById('feedback-no-btn');
+    const feedbackCommentTextarea = document.getElementById('feedback-comment');
+    const submitFeedbackBtn = document.getElementById('submit-feedback-btn');
+    const feedbackConfirmationMessage = document.getElementById('feedback-confirmation-message');
+
+    let profileFeedback = {
+        profileName: '',
+        accuracy: '', // 'yes', 'no', or ''
+        comment: ''
+    };
+
+    // Action Plan elements
+    const actionPlanContainerDiv = document.getElementById('action-plan-container');
+    const actionPlanListDiv = document.getElementById('action-plan-list');
+    const actionPlanEmptyMessageP = document.getElementById('action-plan-empty-message');
+    let selectedActionPlanItems = [];
+    const ACTION_PLAN_STORAGE_KEY = 'digitalMaturityActionPlan';
 
     startButton.addEventListener('click', startEvaluation);
     nextButton.addEventListener('click', goToNextQuestion);
@@ -342,6 +367,8 @@
     }
 
     function showResult() {
+        // selectedActionPlanItems = []; // REMOVE: Load from localStorage instead
+        // loadActionPlanFromLocalStorage(); // Called on DOMContentLoaded and potentially here if needed
         calculateOverallScores(); 
         const userLevel = findLevel(userScore);
         
@@ -385,15 +412,51 @@
         }
         if (matchedProfile) {
             console.log("Matchet Modenhetsprofil:", matchedProfile);
-            if (maturityProfileDisplayDiv) {
-                 maturityProfileDisplayDiv.innerHTML = `<h4>Din Modenhetsprofil: ${matchedProfile.name}</h4>
-                                                   <p>${matchedProfile.description}</p>
-                                                   <p><strong>Typiske styrker:</strong> ${matchedProfile.strengths.join(', ')}</p>
-                                                   <p><strong>Typiske fallgruver:</strong> ${matchedProfile.pitfalls.join(', ')}</p>`;
-                 maturityProfileDisplayDiv.style.display = 'block';
+            if (maturityProfileNameEl && maturityProfileDescriptionEl && maturityProfileStrengthsUl && maturityProfilePitfallsUl && maturityProfileContainerDiv) {
+                maturityProfileNameEl.textContent = matchedProfile.name;
+                maturityProfileDescriptionEl.textContent = matchedProfile.description;
+
+                maturityProfileStrengthsUl.innerHTML = ''; // Clear previous
+                matchedProfile.strengths.forEach(strength => {
+                    const li = document.createElement('li');
+                    li.textContent = strength;
+                    maturityProfileStrengthsUl.appendChild(li);
+                });
+
+                maturityProfilePitfallsUl.innerHTML = ''; // Clear previous
+                matchedProfile.pitfalls.forEach(pitfall => {
+                    const li = document.createElement('li');
+                    li.textContent = pitfall;
+                    maturityProfilePitfallsUl.appendChild(li);
+                });
+
+                maturityProfileContainerDiv.style.display = 'block';
+                // Optional: setIcon(maturityProfileContainerDiv.querySelector('h4'), appConfig.profileIconSvgString);
+
+                // Store profile name for feedback and reset feedback form
+                profileFeedback.profileName = matchedProfile.name;
+                if (feedbackConfirmationMessage) feedbackConfirmationMessage.style.display = 'none';
+                if (feedbackYesBtn) {
+                    feedbackYesBtn.disabled = false;
+                    feedbackYesBtn.classList.remove('ring-2', 'ring-offset-2', 'ring-green-700');
+                }
+                if (feedbackNoBtn) {
+                    feedbackNoBtn.disabled = false;
+                    feedbackNoBtn.classList.remove('ring-2', 'ring-offset-2', 'ring-red-700');
+                }
+                if (feedbackCommentTextarea) {
+                    feedbackCommentTextarea.value = '';
+                    feedbackCommentTextarea.disabled = false;
+                }
+                if (submitFeedbackBtn) {
+                    submitFeedbackBtn.disabled = false;
+                    submitFeedbackBtn.textContent = 'Send tilbakemelding';
+                }
+                profileFeedback.accuracy = '';
+                profileFeedback.comment = '';
             }
         } else {
-            if (maturityProfileDisplayDiv) maturityProfileDisplayDiv.style.display = 'none';
+            if (maturityProfileContainerDiv) maturityProfileContainerDiv.style.display = 'none';
         }
 
         characteristicsUl.innerHTML = '';
@@ -420,7 +483,7 @@
 
         userLevel.recommendations.forEach(rec => {
             if (rec.addressesGaps && rec.addressesGaps.some(gapId => identifiedGapIds.includes(gapId)) && !displayedRecommendationsTexts.has(rec.text)) {
-                finalRecommendations.push({text: rec.text, highlight: true});
+                finalRecommendations.push({text: rec.text, highlight: true, resources: rec.resources || [] });
                 displayedRecommendationsTexts.add(rec.text);
             }
         });
@@ -428,14 +491,14 @@
             const weakCategory = sortedCategoriesByWeightedScore[i][0];
             userLevel.recommendations.forEach(rec => {
                 if (rec.tags && rec.tags.includes(weakCategory) && !displayedRecommendationsTexts.has(rec.text)) {
-                    finalRecommendations.push({text: rec.text, highlight: true});
+                    finalRecommendations.push({text: rec.text, highlight: true, resources: rec.resources || [] });
                     displayedRecommendationsTexts.add(rec.text);
                 }
             });
         }
         userLevel.recommendations.forEach(rec => {
             if (!displayedRecommendationsTexts.has(rec.text) && finalRecommendations.length < 5) {
-                finalRecommendations.push({text: rec.text, highlight: false});
+                finalRecommendations.push({text: rec.text, highlight: false, resources: rec.resources || [] });
                 displayedRecommendationsTexts.add(rec.text);
             }
         });
@@ -446,9 +509,53 @@
         if (finalRecommendations.length > 0) {
             finalRecommendations.forEach(rec => {
                 const recItem = document.createElement('div');
-                recItem.classList.add('recommendation-item');
+                recItem.classList.add('recommendation-item', 'flex', 'justify-between', 'items-start');
                 if(rec.highlight) recItem.classList.add('highlight');
-                recItem.textContent = rec.text;
+
+                const textAndResourcesDiv = document.createElement('div');
+                textAndResourcesDiv.classList.add('flex-grow');
+
+                const recText = document.createElement('span');
+                recText.textContent = rec.text;
+                textAndResourcesDiv.appendChild(recText);
+
+                if (rec.resources && rec.resources.length > 0) {
+                    const resourcesUl = document.createElement('ul');
+                    resourcesUl.classList.add('recommendation-resources-list', 'ml-4', 'mt-1', 'list-disc', 'list-inside');
+                    rec.resources.forEach(resource => {
+                        const resourceLi = document.createElement('li');
+                        const resourceLink = document.createElement('a');
+                        resourceLink.href = resource.url;
+                        resourceLink.textContent = resource.title;
+                        resourceLink.target = '_blank';
+                        resourceLink.classList.add('text-blue-500', 'hover:underline', 'text-sm');
+                        resourceLi.appendChild(resourceLink);
+                        resourcesUl.appendChild(resourceLi);
+                    });
+                    textAndResourcesDiv.appendChild(resourcesUl);
+                }
+                recItem.appendChild(textAndResourcesDiv);
+
+                const starButton = document.createElement('button');
+                const existingItemIndex = selectedActionPlanItems.findIndex(item => item.text === rec.text);
+                if (existingItemIndex > -1) {
+                    starButton.innerHTML = '★'; // Filled star
+                    starButton.classList.add('text-yellow-500');
+                    starButton.classList.remove('text-gray-400');
+                } else {
+                    starButton.innerHTML = '☆'; // Empty star
+                    starButton.classList.remove('text-yellow-500');
+                    starButton.classList.add('text-gray-400');
+                }
+                starButton.classList.add('action-plan-star', 'text-2xl', 'hover:text-yellow-500', 'ml-2', 'p-1');
+                starButton.setAttribute('aria-label', 'Legg til/fjern fra handlingsplan');
+                starButton.dataset.recommendationText = rec.text;
+
+                starButton.addEventListener('click', () => {
+                    toggleActionPlanItem(rec, starButton);
+                });
+                recItem.appendChild(starButton);
+
                 recommendationsListStructured.appendChild(recItem);
             });
             recommendationsContainerDiv.style.display = 'block';
@@ -477,8 +584,100 @@
         if (canvas) { requestAnimationFrame(() => { drawResultVisualization(userScore, userLevel); }); }
         if (radarCanvas) { requestAnimationFrame(() => { drawRadarChart(); }); }
 
+        renderActionPlan(); // Display initial empty state for action plan
+
         // Lagre resultatet dersom backend er tilgjengelig
         saveResultsToServer();
+    }
+
+    function toggleActionPlanItem(recommendation, starButton) {
+        const index = selectedActionPlanItems.findIndex(item => item.text === recommendation.text);
+        if (index > -1) { // Item exists, so remove it
+            selectedActionPlanItems.splice(index, 1);
+            starButton.innerHTML = '☆'; // Empty star
+            starButton.classList.remove('text-yellow-500');
+            starButton.classList.add('text-gray-400');
+        } else { // Item doesn't exist, so add it
+            const newItem = {
+                text: recommendation.text,
+                resources: recommendation.resources || [],
+                highlight: recommendation.highlight,
+                notes: '' // Initialize notes
+            };
+            selectedActionPlanItems.push(newItem);
+            starButton.innerHTML = '★'; // Filled star
+            starButton.classList.add('text-yellow-500');
+            starButton.classList.remove('text-gray-400');
+        }
+        saveActionPlanToLocalStorage();
+        renderActionPlan();
+    }
+
+    function renderActionPlan() {
+        actionPlanListDiv.innerHTML = ''; // Clear previous items
+        if (selectedActionPlanItems.length === 0) {
+            if(actionPlanEmptyMessageP) {
+                 actionPlanListDiv.appendChild(actionPlanEmptyMessageP);
+                 actionPlanEmptyMessageP.style.display = 'block';
+            }
+            // actionPlanContainerDiv.style.display = 'block'; // Keep visible for empty message or hide if preferred
+        } else {
+            if(actionPlanEmptyMessageP) actionPlanEmptyMessageP.style.display = 'none';
+            selectedActionPlanItems.forEach(item => {
+                const planItemDiv = document.createElement('div');
+                planItemDiv.classList.add('action-plan-item', 'p-3', 'bg-blue-50', 'rounded-md', 'shadow-sm');
+
+                const itemText = document.createElement('p');
+                itemText.textContent = item.text;
+                itemText.classList.add('text-gray-800', 'mb-1');
+                planItemDiv.appendChild(itemText);
+
+                if (item.resources && item.resources.length > 0) {
+                    const resourcesUl = document.createElement('ul');
+                    resourcesUl.classList.add('recommendation-resources-list', 'ml-4', 'mt-1', 'list-disc', 'list-inside', 'mb-2');
+                    item.resources.forEach(resource => {
+                        const resourceLi = document.createElement('li');
+                        const resourceLink = document.createElement('a');
+                        resourceLink.href = resource.url;
+                        resourceLink.textContent = resource.title;
+                        resourceLink.target = '_blank';
+                        resourceLink.classList.add('text-blue-500', 'hover:underline', 'text-sm');
+                        resourceLi.appendChild(resourceLink);
+                        resourcesUl.appendChild(resourceLi);
+                    });
+                    planItemDiv.appendChild(resourcesUl);
+                }
+
+                const notesTextarea = document.createElement('textarea');
+                notesTextarea.classList.add('action-plan-notes', 'w-full', 'p-2', 'border', 'border-gray-300', 'rounded-md', 'text-sm', 'mt-2');
+                notesTextarea.rows = 2;
+                notesTextarea.placeholder = 'Dine notater her...';
+                notesTextarea.value = item.notes || '';
+
+                notesTextarea.addEventListener('change', (event) => {
+                    item.notes = event.target.value;
+                    saveActionPlanToLocalStorage();
+                });
+                planItemDiv.appendChild(notesTextarea);
+
+                actionPlanListDiv.appendChild(planItemDiv);
+            });
+        }
+        // Ensure container is visible if there's content or if it should show empty message
+        actionPlanContainerDiv.style.display = (selectedActionPlanItems.length > 0 || actionPlanEmptyMessageP.style.display === 'block') ? 'block' : 'none';
+    }
+
+    function saveActionPlanToLocalStorage() {
+        localStorage.setItem(ACTION_PLAN_STORAGE_KEY, JSON.stringify(selectedActionPlanItems));
+    }
+
+    function loadActionPlanFromLocalStorage() {
+        const storedPlan = localStorage.getItem(ACTION_PLAN_STORAGE_KEY);
+        if (storedPlan) {
+            selectedActionPlanItems = JSON.parse(storedPlan);
+        } else {
+            selectedActionPlanItems = [];
+        }
     }
     
     function identifyGaps() {
@@ -615,17 +814,101 @@
         if (recommendationsListStructured) recommendationsListStructured.innerHTML = '';
         if (recommendationsContainerDiv) { recommendationsContainerDiv.style.display = 'none'; clearIcon(recommendationsContainerDiv.querySelector('h4'));}
         gapsListDiv.innerHTML = ''; gapsContainerDiv.style.display = 'none'; clearIcon(gapsTitleH4);
-        if (maturityProfileDisplayDiv) { maturityProfileDisplayDiv.innerHTML = ''; maturityProfileDisplayDiv.style.display = 'none';}
+        // if (maturityProfileDisplayDiv) { maturityProfileDisplayDiv.innerHTML = ''; maturityProfileDisplayDiv.style.display = 'none';} // Old version
+        if (maturityProfileContainerDiv) maturityProfileContainerDiv.style.display = 'none';
+        if (maturityProfileNameEl) maturityProfileNameEl.textContent = '';
+        if (maturityProfileDescriptionEl) maturityProfileDescriptionEl.textContent = '';
+        if (maturityProfileStrengthsUl) maturityProfileStrengthsUl.innerHTML = '';
+        if (maturityProfilePitfallsUl) maturityProfilePitfallsUl.innerHTML = '';
         if (canvas && canvas.getContext('2d')) { const tempCtx = canvas.getContext('2d'); tempCtx.clearRect(0, 0, canvas.width, canvas.height); }
         if (radarChartInstance) { radarChartInstance.destroy(); radarChartInstance = null; }
         if (radarCanvas && radarCanvas.getContext('2d')) { const tempRadarCtx = radarCanvas.getContext('2d'); tempRadarCtx.clearRect(0, 0, radarCanvas.width, radarCanvas.height); }
+
+        // Reset feedback form
+        if (feedbackConfirmationMessage) feedbackConfirmationMessage.style.display = 'none';
+        if (feedbackYesBtn) {
+            feedbackYesBtn.disabled = false;
+            feedbackYesBtn.classList.remove('ring-2', 'ring-offset-2', 'ring-green-700');
+        }
+        if (feedbackNoBtn) {
+            feedbackNoBtn.disabled = false;
+            feedbackNoBtn.classList.remove('ring-2', 'ring-offset-2', 'ring-red-700');
+        }
+        if (feedbackCommentTextarea) {
+            feedbackCommentTextarea.value = '';
+            feedbackCommentTextarea.disabled = false;
+        }
+        if (submitFeedbackBtn) {
+            submitFeedbackBtn.disabled = false;
+            submitFeedbackBtn.textContent = 'Send tilbakemelding';
+        }
+        profileFeedback = { profileName: '', accuracy: '', comment: '' };
+
+        // Reset Action Plan
+        selectedActionPlanItems = [];
+        saveActionPlanToLocalStorage(); // Persist the cleared plan
+        if (actionPlanContainerDiv) actionPlanContainerDiv.style.display = 'none';
+        if (actionPlanListDiv) actionPlanListDiv.innerHTML = '';
     }
+
+    // Event Listeners for Feedback
+    if (feedbackYesBtn) {
+        feedbackYesBtn.addEventListener('click', () => {
+            profileFeedback.accuracy = 'yes';
+            feedbackYesBtn.classList.add('ring-2', 'ring-offset-2', 'ring-green-700');
+            feedbackNoBtn.classList.remove('ring-2', 'ring-offset-2', 'ring-red-700');
+        });
+    }
+
+    if (feedbackNoBtn) {
+        feedbackNoBtn.addEventListener('click', () => {
+            profileFeedback.accuracy = 'no';
+            feedbackNoBtn.classList.add('ring-2', 'ring-offset-2', 'ring-red-700');
+            feedbackYesBtn.classList.remove('ring-2', 'ring-offset-2', 'ring-green-700');
+        });
+    }
+
+    if (submitFeedbackBtn) {
+        submitFeedbackBtn.addEventListener('click', () => {
+            profileFeedback.comment = feedbackCommentTextarea.value.trim();
+            const currentProfileName = maturityProfileNameEl ? maturityProfileNameEl.textContent : 'Ukjent Profil';
+            profileFeedback.profileName = currentProfileName; // Ensure it's current
+
+            if (!profileFeedback.accuracy) {
+                alert('Vennligst angi om profilbeskrivelsen var treffende (Ja/Nei).');
+                return;
+            }
+
+            console.log('Innsendt tilbakemelding:', profileFeedback);
+
+            const mailToSubject = `Tilbakemelding på Modenhetsprofil: ${profileFeedback.profileName}`;
+            let mailToBody = `Profil: ${profileFeedback.profileName}\n`;
+            mailToBody += `Treffende: ${profileFeedback.accuracy === 'yes' ? 'Ja' : 'Nei'}\n`;
+            if (profileFeedback.comment) {
+                mailToBody += `Kommentar: ${profileFeedback.comment}\n`;
+            }
+
+            if (feedbackConfirmationMessage) {
+                feedbackConfirmationMessage.textContent = `Takk for din tilbakemelding! (Detaljer logget i konsollen. Mailto-link kan lages her: mailto:din-epost@example.com?subject=${encodeURIComponent(mailToSubject)}&body=${encodeURIComponent(mailToBody)} )`;
+                feedbackConfirmationMessage.style.display = 'block';
+            }
+
+            feedbackYesBtn.disabled = true;
+            feedbackNoBtn.disabled = true;
+            feedbackCommentTextarea.disabled = true;
+            submitFeedbackBtn.disabled = true;
+            submitFeedbackBtn.textContent = 'Tilbakemelding sendt';
+        });
+    }
+
 
     document.addEventListener('DOMContentLoaded', async () => {
         const dataLoaded = await loadAllData();
         if (dataLoaded) {
-            startButton.disabled = false; 
-            console.log("App data loaded successfully.");
+            startButton.disabled = false;
+            loadActionPlanFromLocalStorage(); // Load action plan on initial load
+            console.log("App data and action plan loaded successfully.");
+            // No need to render action plan here, showResult will do it.
         } else {
             startButton.disabled = true;
             const introCard = document.getElementById('intro-card'); // Sørg for at dette elementet finnes
