@@ -461,7 +461,7 @@
 
         characteristicsUl.innerHTML = '';
         if (userLevel.characteristics && userLevel.characteristics.length > 0 && buttonTextPlaceholder) {
-            userLvl.characteristics.forEach(char => {
+            userLevel.characteristics.forEach(char => {
                 const li = document.createElement('li'); li.textContent = char; characteristicsUl.appendChild(li);
             });
             toggleCharacteristicsBtn.style.display = 'inline-flex';
