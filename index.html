@@ -1,71 +1,156 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Digital Modenhet – Verktøykasse</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Modenhet Selvevaluering</title>
+    <!-- From original index.html -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- From index2.html -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 text-gray-800">
-  <header class="bg-white/80 backdrop-blur border-b border-gray-200 py-12 px-4 shadow-md">
-    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-10">
-      <div class="text-center lg:text-left max-w-xl" data-aos="fade-right">
-        <h1 class="text-4xl font-bold text-gray-900">Verktøy for Digitalisering</h1>
-        <p class="mt-4 text-lg text-gray-600">Kunstig Intelligens, KI, er ikke første stopp i en digitaliseringsreise. Få hjelp til å finne riktig startpunkt og bli en tryggere bestiller i samme slengen.  </p>
-        <a href="https://www.linkedin.com/in/hassanzouhar" class="mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-3 rounded-xl">Ta kontakt</a>
-      </div>
-      <div class="w-full lg:max-w-md" data-aos="fade-left">
-        <img src="dmsa-demo.gif" alt="Illustrasjon av dashboard" class="w-full rounded-xl shadow-xl" />
-      </div>
+<body>
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+    <div class="container">
+        <h1>Selvevaluering - Digital Modenhet</h1>
+
+        <div id="intro-card" class="card">
+            <h2>Evaluer din organisasjons digitale modenhet</h2>
+            <p>Denne korte evalueringen vil hjelpe deg med å identifisere hvor din organisasjon befinner seg på skalaen for digital modenhet og dataeierskap. Du vil få tilbakemelding om nåværende nivå og anbefalinger for videre utvikling.</p>
+            <p>Evalueringen tar cirka 3 minutter å gjennomføre.</p>
+            <button id="start-btn">Start evalueringen</button>
+        </div>
+
+        <div id="question-container" class="card">
+            <div class="step-indicator">
+                <div class="step" id="step1"><div class="step-circle">1</div><div class="step-text">Datainnsamling</div></div>
+                <div class="step" id="step2"><div class="step-circle">2</div><div class="step-text">Dataanalyse</div></div>
+                <div class="step" id="step3"><div class="step-circle">3</div><div class="step-text">Dataprosesser</div></div>
+                <div class="step" id="step4"><div class="step-circle">4</div><div class="step-text">Strategi</div></div>
+                <div class="step" id="step5"><div class="step-circle">5</div><div class="step-text">Organisasjon</div></div>
+            </div>
+            <div class="progress-bar"><div class="progress" id="progress"></div></div>
+            <div id="questions-wrapper"></div>
+            <div class="navigation">
+                <button id="prev-btn" class="outline" disabled>Forrige</button>
+                <button id="next-btn" disabled>Neste</button>
+            </div>
+        </div>
+
+        <div id="result-container" class="card">
+            <div id="result-summary">
+                <div class="result-header-flex">
+                    <h3 id="result-level-combined">
+                        Resultat: Din bedrift er på <span id="level-number-actual" class="level-number-highlight"></span> "<span id="level-name-actual" class="level-name-normal"></span>"
+                    </h3>
+                    <div id="result-score-display" class="score-badge">
+                        <span id="score"></span><span id="max-score-display">/25</span> poeng
+                    </div>
+                </div>
+                <p id="result-description"></p>
+            </div>
+
+            <div class="visualization-group">
+                <h3>Visuell oversikt: Trappetrinnsmodell</h3>
+                <div id="canvas-container" aria-label="Visualisering av modenhetsnivå" aria-describedby="canvas-desc">
+                    <canvas id="result-canvas" width="800" height="320"></canvas>
+                    <div id="canvas-desc">
+                        Diagrammet viser din organisasjons nivå på en trappetrinnsmodell for digital modenhet.
+                    </div>
+                </div>
+            </div>
+
+            <div class="visualization-group">
+                <h3>Din modenhetsprofil per kategori</h3>
+                <div id="radar-chart-container" aria-label="Spindeldiagram som viser score per kategori" aria-describedby="radar-chart-desc">
+                    <canvas id="radar-chart" width="400" height="400"></canvas>
+                     <div id="radar-chart-desc">
+                        Spindeldiagrammet viser din score (1-5, eller gjennomsnitt hvis NA) for hver av de fem hovedkategoriene.
+                    </div>
+                </div>
+            </div>
+
+            <div id="maturity-profile-container" class="bg-white p-6 rounded-lg shadow-md mt-8" style="display: none;">
+                <h4 class="text-xl font-semibold mb-3 text-gray-700 flex items-center">
+                    <span class="section-icon-placeholder mr-2"></span> <!-- Placeholder for a potential icon -->
+                    Din Modenhetsprofil
+                </h4>
+                <div id="maturity-profile-content">
+                    <h5 id="maturity-profile-name" class="text-lg font-semibold text-blue-600 mb-1"></h5>
+                    <p id="maturity-profile-description" class="text-gray-600 mb-3"></p>
+                    <div class="mb-2">
+                        <strong class="text-gray-700">Typiske styrker:</strong>
+                        <ul id="maturity-profile-strengths" class="list-disc list-inside text-gray-600 pl-4"></ul>
+                    </div>
+                    <div>
+                        <strong class="text-gray-700">Typiske fallgruver:</strong>
+                        <ul id="maturity-profile-pitfalls" class="list-disc list-inside text-gray-600 pl-4"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="maturity-profile-feedback" class="mt-4 pt-4 border-t border-gray-200">
+                <h6 class="text-sm font-semibold text-gray-700 mb-2">Var denne profilbeskrivelsen treffende for din virksomhet?</h6>
+                <div class="flex items-center mb-2">
+                    <button id="feedback-yes-btn" type="button" class="bg-green-500 hover:bg-green-600 text-white text-sm font-medium px-4 py-2 rounded-md mr-2">Ja</button>
+                    <button id="feedback-no-btn" type="button" class="bg-red-500 hover:bg-red-600 text-white text-sm font-medium px-4 py-2 rounded-md mr-2">Nei</button>
+                </div>
+                <textarea id="feedback-comment" class="w-full p-2 border border-gray-300 rounded-md text-sm" rows="3" placeholder="Eventuelle kommentarer (valgfritt)..."></textarea>
+                <button id="submit-feedback-btn" type="button" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-md">Send tilbakemelding</button>
+                <p id="feedback-confirmation-message" class="text-sm text-green-700 mt-2" style="display: none;">Takk for din tilbakemelding!</p>
+            </div>
+
+            <div class="details-toggle-section">
+                <button id="toggle-characteristics-btn" class="link-button" aria-expanded="false" aria-controls="level-details-content" style="display: none;">
+                    <span class="button-text-placeholder">Vis kjennetegn for nivået</span> <span class="icon-toggle">▼</span>
+                </button>
+                <div id="level-details-content" class="collapsible-content" hidden>
+                    <h4>Kjennetegn ved ditt nivå:</h4>
+                    <ul id="level-characteristics"></ul>
+                </div>
+            </div>
+
+            <div id="gaps-container" class="gaps">
+                <h4 id="gaps-title"><span class="section-icon-placeholder"></span>Dine forbedringsområder</h4>
+                <div id="gaps-list"></div>
+            </div>
+
+            <div id="recommendations-container" class="recommendations-section" style="display: none;">
+                <h4><span class="section-icon-placeholder"></span>Anbefalte neste steg</h4>
+                <div id="recommendations-list-structured"></div>
+            </div>
+
+            <div class="restart-container">
+                <button id="restart-btn" class="outline">Start på nytt</button>
+            </div>
+        </div>
+
+        <div id="action-plan-container" class="bg-white p-6 rounded-lg shadow-md mt-8" style="display: none;">
+            <h4 class="text-xl font-semibold mb-3 text-gray-700 flex items-center">
+                <span class="section-icon-placeholder mr-2"></span> <!-- Placeholder for a potential icon -->
+                Min Handlingsplan
+            </h4>
+            <div id="action-plan-list" class="space-y-2">
+                <!-- Selected recommendations will be dynamically added here -->
+                <p id="action-plan-empty-message" class="text-gray-500 italic">Du har ikke valgt noen anbefalinger til handlingsplanen din ennå. Klikk på stjerneikonet ved siden av en anbefaling for å legge den til.</p>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <main class="max-w-6xl mx-auto px-6 py-20">
-    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      <div class="rounded-3xl bg-white/90 backdrop-blur shadow-xl p-8 flex flex-col justify-between transform transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl" data-aos="fade-up">
-        <div>
-          <div class="mb-5 text-blue-600">
-            <i data-lucide="check-circle" class="w-8 h-8"></i>
-          </div>
-          <h3 class="text-2xl font-semibold text-gray-900 mb-3">Et klart svar</h3>
-          <p class="text-gray-600">Vurder bedriftens digitale modenhet og kapasitet på 5 nøkkelområder. I løpet av minutter får du en enkel, faktabasert vudering, sammen med visualiseringer og anbefalinger for steg videre..</p>
-        </div>
-        <a href="index2.html" class="mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-3 rounded-xl">Åpne verktøyet</a>
-      </div>
-
-      <div class="rounded-3xl bg-white/90 backdrop-blur shadow-xl p-8 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl" data-aos="fade-up" data-aos-delay="100">
-        <div class="mb-5 text-blue-600">
-          <i data-lucide="book-open" class="w-8 h-8"></i>
-        </div>
-        <h3 class="text-2xl font-semibold text-gray-900 mb-3">Artikler & Innsikt</h3>
-        <p class="text-gray-600">Utforsk faglige refleksjoner og praktiske guider om hva som egentlig kreves før AI kan gi verdi.</p>
-        <span class="mt-6 inline-block text-sm text-yellow-600 font-medium">Kommer snart</span>
-      </div>
-
-      <div class="rounded-3xl bg-white/90 backdrop-blur shadow-xl p-8 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl" data-aos="fade-up" data-aos-delay="200">
-        <div class="mb-5 text-blue-600">
-          <i data-lucide="map" class="w-8 h-8"></i>
-        </div>
-        <h3 class="text-2xl font-semibold text-gray-900 mb-3">Veikart & Rammeverk</h3>
-        <p class="text-gray-600">Visuell oversikt og sjekklister over hvordan digital modenhet bygges opp i praksis.</p>
-        <span class="mt-6 inline-block text-sm text-yellow-600 font-medium">Kommer snart</span>
-      </div>
-    </div>
-  </main>
-
-  <footer class="text-center text-sm text-gray-500 py-12">
-    © 2025 Laget med ❤️ av <a href="https://www.linkedin.com/in/hassanzouhar" class="text-blue-600 hover:underline">Hassan Zouhar</a>. Alle rettigheter reservert.
-  </footer>
-
-  <script>
-    lucide.createIcons();
-  </script>
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    AOS.init({ once: true });
-  </script>
+    <!-- From index2.html -->
+    <script src="script.js"></script>
+    <!-- From original index.html -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      lucide.createIcons();
+      AOS.init({ once: true });
+    </script>
 </body>
 </html>
