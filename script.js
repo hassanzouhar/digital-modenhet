@@ -51,6 +51,7 @@
     let radarChartInstance = null;
 
     const introCard = document.getElementById('intro-card');
+    const heroStartButton = document.getElementById('hero-start-btn');
     const questionContainer = document.getElementById('question-container');
     const resultContainer = document.getElementById('result-container');
     const questionsWrapper = document.getElementById('questions-wrapper');
@@ -105,6 +106,12 @@
     const ACTION_PLAN_STORAGE_KEY = 'digitalMaturityActionPlan';
 
     startButton.addEventListener('click', startEvaluation);
+    if (heroStartButton) {
+        heroStartButton.addEventListener('click', () => {
+            const intro = document.getElementById('intro-card');
+            if (intro) intro.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
     nextButton.addEventListener('click', goToNextQuestion);
     prevButton.addEventListener('click', goToPreviousQuestion);
     restartButton.addEventListener('click', resetEvaluation);
