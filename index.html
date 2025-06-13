@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Modenhet Selvevaluering</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- From original index.html -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -25,7 +28,7 @@
             <h2>Evaluer din organisasjons digitale modenhet</h2>
             <p>Denne korte evalueringen vil hjelpe deg med å identifisere hvor din organisasjon befinner seg på skalaen for digital modenhet og dataeierskap. Du vil få tilbakemelding om nåværende nivå og anbefalinger for videre utvikling.</p>
             <p>Evalueringen tar cirka 3 minutter å gjennomføre.</p>
-            <button id="start-btn">Start evalueringen</button>
+            <button id="start-btn" class="btn btn-primary">Start evalueringen</button>
         </div>
 
         <div id="question-container" class="card">
@@ -39,8 +42,8 @@
             <div class="progress-bar"><div class="progress" id="progress"></div></div>
             <div id="questions-wrapper"></div>
             <div class="navigation">
-                <button id="prev-btn" class="outline" disabled>Forrige</button>
-                <button id="next-btn" disabled>Neste</button>
+                <button id="prev-btn" class="btn btn-secondary" disabled>Forrige</button>
+                <button id="next-btn" class="btn btn-primary" disabled>Neste</button>
             </div>
         </div>
 
@@ -128,7 +131,7 @@
             </div>
 
             <div class="restart-container">
-                <button id="restart-btn" class="outline">Start på nytt</button>
+                <button id="restart-btn" class="btn btn-secondary">Start på nytt</button>
             </div>
         </div>
 
