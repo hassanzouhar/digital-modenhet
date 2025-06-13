@@ -96,7 +96,7 @@ const staticBasePath = path.resolve(__dirname);
 
 function serveStatic(res, pathname) {
   if (pathname === '/' || pathname === '') {
-    pathname = '/index2.html';
+    pathname = '/index.html';
   }
 
   const filePath = path.resolve(path.join(staticBasePath, pathname));
