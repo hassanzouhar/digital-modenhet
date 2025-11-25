@@ -39,39 +39,261 @@
             padding: 20px;
             transition: all 0.3s ease;
         }
+        /* Hero Section */
         .hero {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: -20px -20px 40px -20px;
+            color: white;
         }
-        .hero h1 {
-            font-size: 2.5rem;
-            color: var(--text-color-dark);
-            margin-bottom: 15px;
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
         }
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-color-medium);
-            margin-bottom: 25px;
+        .hero-title {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #fbbf24;
+            line-height: 1;
+        }
+        .stat-number::after {
+            content: '%';
+        }
+        .stat-label {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 8px;
+            max-width: 200px;
+            text-align: center;
         }
         .hero-btn {
-            font-size: 1.1rem;
-            padding: 12px 20px;
+            font-size: 1.2rem;
+            padding: 16px 32px;
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .features {
-            max-width: 800px;
-            margin: 0 auto 40px;
-        }
-        .features h2 {
-            text-align: center;
+        .hero-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            background-color: #fbbf24;
             color: var(--text-color-dark);
-            margin-bottom: 10px;
         }
-        .features ul {
-            list-style-type: disc;
-            padding-left: 20px;
+
+        /* Section Styling */
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            color: var(--text-color-dark);
+            margin-bottom: 40px;
+            font-weight: 600;
         }
-        .features li {
-            margin-bottom: 8px;
+
+        /* Problems Section */
+        .problems-section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .problem-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        .problem-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .problem-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(99, 102, 241, 0.15);
+            border-color: var(--primary-color);
+        }
+        .problem-card.card-active {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%);
+        }
+        .problem-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .problem-card h3 {
+            color: var(--text-color-dark);
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .problem-card p {
+            color: var(--text-color-light);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Solution Section */
+        .solution-section {
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 40px -20px;
+        }
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .solution-card {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .solution-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+        .solution-number {
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.4);
+        }
+        .solution-card h3 {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            color: var(--text-color-dark);
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        .solution-card p {
+            color: var(--text-color-light);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        .solution-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .solution-btn:hover {
+            background-color: var(--primary-hover-color);
+            transform: scale(1.05);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 60px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .faq-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .faq-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .faq-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .faq-question {
+            width: 100%;
+            padding: 20px 25px;
+            background: white;
+            border: none;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color-dark);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        .faq-question:hover {
+            background-color: #f8fafc;
+        }
+        .faq-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            transition: transform 0.3s ease;
+            font-weight: 300;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 25px;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 25px 20px 25px;
+        }
+        .faq-answer p {
+            color: var(--text-color-light);
+            line-height: 1.7;
+            margin: 0;
         }
         .card:hover {
             transform: translateY(-4px);
@@ -478,11 +700,73 @@
         }
 
         @media (max-width: 768px) {
-            body { padding: 15px; }
+            body { padding: 10px; }
             .card { padding: 15px; }
             .step-text { font-size: 10px; max-width: 70px; }
             .question { font-size: 16px; }
-            
+
+            /* Hero responsive */
+            .hero {
+                padding: 50px 15px;
+                margin: -10px -10px 30px -10px;
+            }
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            .hero-stats {
+                gap: 30px;
+            }
+            .stat-number {
+                font-size: 2.5rem;
+            }
+            .stat-label {
+                font-size: 0.85rem;
+            }
+            .hero-btn {
+                font-size: 1rem;
+                padding: 14px 24px;
+            }
+
+            /* Section titles */
+            .section-title {
+                font-size: 1.7rem;
+                margin-bottom: 30px;
+            }
+
+            /* Problem cards responsive */
+            .problems-section {
+                padding: 40px 15px;
+            }
+            .problem-cards {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .problem-card {
+                padding: 25px;
+            }
+
+            /* Solution section responsive */
+            .solution-section {
+                padding: 40px 15px;
+                margin: 30px -10px;
+            }
+            .solution-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            /* FAQ responsive */
+            .faq-section {
+                padding: 40px 15px;
+            }
+            .faq-question {
+                font-size: 1rem;
+                padding: 15px 20px;
+            }
+
             .result-header-flex { flex-direction: column; align-items: stretch; gap: 10px; }
             h3#result-level-combined { font-size: 1.3em; text-align: center; }
             .score-badge { font-size: 1em; padding: 6px 12px; align-self: center; }
