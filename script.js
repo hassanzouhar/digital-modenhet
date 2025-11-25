@@ -909,6 +909,87 @@
     }
 
 
+    // === Landing Page Interactive Features ===
+
+    // Counter Animation for Statistics
+    function animateCounter(element) {
+        const target = parseInt(element.getAttribute('data-target'));
+        const duration = 2000; // 2 seconds
+        const increment = target / (duration / 16); // 60fps
+        let current = 0;
+
+        const updateCounter = () => {
+            current += increment;
+            if (current < target) {
+                element.textContent = Math.floor(current);
+                requestAnimationFrame(updateCounter);
+            } else {
+                element.textContent = target;
+            }
+        };
+
+        updateCounter();
+    }
+
+    // Intersection Observer for counter animation
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px'
+    };
+
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && entry.target.textContent === '0') {
+                animateCounter(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // FAQ Accordion functionality
+    function initializeFAQ() {
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+
+                // Close all FAQ items
+                faqItems.forEach(faqItem => {
+                    faqItem.classList.remove('active');
+                });
+
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    }
+
+    // Problem cards interaction - add click effect
+    function initializeProblemCards() {
+        const problemCards = document.querySelectorAll('.problem-card');
+
+        problemCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove active class from all cards
+                problemCards.forEach(c => c.classList.remove('card-active'));
+                // Add active class to clicked card
+                card.classList.add('card-active');
+
+                // Optional: Scroll to solution section after a delay
+                setTimeout(() => {
+                    const solutionSection = document.querySelector('.solution-section');
+                    if (solutionSection) {
+                        solutionSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 300);
+            });
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
         const dataLoaded = await loadAllData();
         if (dataLoaded) {
@@ -927,6 +1008,16 @@
             }
             console.error("Failed to load essential app data. Application cannot start.");
         }
+
+        // Initialize landing page features
+        initializeFAQ();
+        initializeProblemCards();
+
+        // Observe stat numbers for animation
+        const statNumbers = document.querySelectorAll('.stat-number');
+        statNumbers.forEach(stat => {
+            counterObserver.observe(stat);
+        });
     });
     if(startButton) startButton.disabled = true;
     if (typeof module !== "undefined" && module.exports) {

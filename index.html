@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Modenhet Selvevaluering</title>
+    <title>Digital Bedrift - Ressurser for digitalisering av SMB</title>
+    <meta name="description" content="Hjelp til norske SMB-er som ønsker å skape reell verdi fra digitalisering. Gratis verktøy for å kartlegge din digitale modenhet og få skreddersydde anbefalinger.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -22,19 +23,116 @@
     </script>
     <script defer src="/_vercel/insights/script.js"></script>
 
+    <!-- Hero Section -->
     <header class="hero">
-        <h1>Digital Modenhet</h1>
-        <p>Få et raskt overblikk over hvor digitalt moden virksomheten din er.</p>
-        <button id="hero-start-btn" class="btn btn-primary hero-btn">Kom i gang</button>
+        <div class="hero-content">
+            <h1 class="hero-title">Digital Bedrift</h1>
+            <p class="hero-subtitle">Ressurser og veiledning for norske SMB-er som vil skape reell verdi fra digitalisering</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number" data-target="73">0</span>
+                    <span class="stat-label">% av SMB-er sliter med digitalisering</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="60">0</span>
+                    <span class="stat-label">% ser ikke ønsket avkastning</span>
+                </div>
+            </div>
+            <button id="hero-start-btn" class="btn btn-primary hero-btn">Start din digitaliseringsreise</button>
+        </div>
     </header>
 
-    <section class="features">
-        <h2>Hvorfor ta testen?</h2>
-        <ul>
-            <li><strong>Raskt</strong> – kun noen få minutters innsats.</li>
-            <li><strong>Innsiktsfullt</strong> – identifiser styrker og forbedringsområder.</li>
-            <li><strong>Kostnadsfritt</strong> – verktøyet er helt gratis.</li>
-        </ul>
+    <!-- Problems Section -->
+    <section class="problems-section">
+        <h2 class="section-title">Kjenner du deg igjen?</h2>
+        <div class="problem-cards">
+            <div class="problem-card" data-problem="1">
+                <div class="problem-icon">💸</div>
+                <h3>Høye kostnader, liten effekt</h3>
+                <p>Investert mye i IT-systemer, men ser lite forbedring i daglig drift</p>
+            </div>
+            <div class="problem-card" data-problem="2">
+                <div class="problem-icon">🤷</div>
+                <h3>Manglende kompetanse</h3>
+                <p>Vet ikke hvor du skal starte eller hvilke verktøy som passer din bedrift</p>
+            </div>
+            <div class="problem-card" data-problem="3">
+                <div class="problem-icon">📊</div>
+                <h3>Datakaos</h3>
+                <p>Samler på data uten å få verdifull innsikt eller ta bedre beslutninger</p>
+            </div>
+            <div class="problem-card" data-problem="4">
+                <div class="problem-icon">⚙️</div>
+                <h3>Fragmenterte systemer</h3>
+                <p>Ulike systemer som ikke snakker sammen, manuelt dobbeltarbeid</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="solution-section">
+        <h2 class="section-title">Hvordan vi kan hjelpe</h2>
+        <div class="solution-grid">
+            <div class="solution-card">
+                <div class="solution-number">1</div>
+                <h3>Kartlegg din modenhet</h3>
+                <p>Ta vår gratis test for å identifisere hvor du står og hvilke områder som trenger forbedring</p>
+                <button class="solution-btn" onclick="document.getElementById('intro-card').scrollIntoView({ behavior: 'smooth' })">Start test</button>
+            </div>
+            <div class="solution-card">
+                <div class="solution-number">2</div>
+                <h3>Få skreddersydde råd</h3>
+                <p>Basert på dine svar får du konkrete anbefalinger tilpasset din virksomhet</p>
+            </div>
+            <div class="solution-card">
+                <div class="solution-number">3</div>
+                <h3>Lær og voks</h3>
+                <p>Få tilgang til ressurser, verktøy og best practices for din bransje</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <h2 class="section-title">Ofte stilte spørsmål</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Hva er digital modenhet?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Digital modenhet handler om hvor godt en organisasjon utnytter digitale verktøy og data for å skape verdi. Det inkluderer alt fra datainnsamling og analyse til strategi og organisasjonskultur.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Hvor lang tid tar evalueringen?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Evalueringen tar cirka 3-5 minutter å gjennomføre. Du får umiddelbare resultater og anbefalinger basert på dine svar.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Er dette egnet for min bedrift?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Verktøyet er utviklet spesielt for små og mellomstore bedrifter (SMB) i Norge, uavhengig av bransje. Enten du har 5 eller 250 ansatte vil du få relevant innsikt.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Hva koster det?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Verktøyet er helt gratis. Vår målsetting er å hjelpe norske bedrifter lykkes med digitalisering.</p>
+                </div>
+            </div>
+        </div>
     </section>
 
     <div class="container">
